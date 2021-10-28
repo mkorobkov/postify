@@ -9,6 +9,9 @@ site = {bucket = "./build",entry-point = "./workers-site"}
 
 account_id = '<ACCOUNT_ID>'
 
-kv_namespaces = [ 
+[build]
+command = 'npm run build'
+
+kv_namespaces = [
   { binding = "NAMESPACE_BINDING", id = "<ID>" }
 ]
