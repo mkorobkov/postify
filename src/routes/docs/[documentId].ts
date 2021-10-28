@@ -13,7 +13,7 @@ export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> =
 	const { documentId } = request.params;
 
 	if (documentId !== 'existing') {
-		return { status: 404, body: { success: false, message: 'qwe' } };
+		return { status: 404, body: { success: false, message: crypto.randomUUID() } };
 	}
 
 	return {
