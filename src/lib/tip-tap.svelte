@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
 	import { Editor } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
@@ -10,7 +11,13 @@
 	let element;
 	let editor: Editor | undefined;
 
-	$: editor?.commands.setContent(content);
+	$: async () => {
+		if (editor) {
+			const cursorPosition = editor.view.state.selection.anchor;
+			editor.commands.setContent(content);
+			editor.commands.setTextSelection(cursorPosition); // prevent moving cursor to the end
+		}
+	};
 	$: editor?.setEditable(editable);
 
 	onMount(() => {
@@ -19,7 +26,7 @@
 			element,
 			extensions: [StarterKit],
 			content,
-			onUpdate({ editor }) {
+			onUpdate: async ({ editor }) => {
 				content = editor.getJSON() as TipTapJSONContent;
 			}
 		});
