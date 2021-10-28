@@ -10,11 +10,18 @@
 
 		const res = await response.json();
 
-		return {
-			props: {
-				doc: res
-			}
-		};
+		if (res.success) {
+			return {
+				props: {
+					doc: res
+				}
+			};
+		} else {
+			return {
+				status: response.status,
+				error: new Error(`Could not load document with id: ${page.params.documentId}`)
+			};
+		}
 	};
 </script>
 
