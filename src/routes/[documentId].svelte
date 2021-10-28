@@ -15,7 +15,8 @@
 		if (documentResponse.success === true) {
 			return {
 				props: {
-					doc: documentResponse.data.document
+					doc: documentResponse.data.document,
+					isOwner: documentResponse.data.isOwner
 				}
 			};
 		} else {
@@ -31,9 +32,12 @@
 	import TipTap from '$lib/tip-tap.svelte';
 
 	export let doc: GetDocumentData['document'];
+	export let isOwner: boolean;
 </script>
 
+<a href="/">main page</a>
 <h1>Here will be post</h1>
-{JSON.stringify(doc)}
+<div>{isOwner}</div>
+<div>{JSON.stringify(doc)}</div>
 
-<TipTap content={doc.content} />
+<TipTap content={doc.content} editable={isOwner} />
