@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
+	import type { GetDocumentResponse } from './docs/_typings';
 
 	export const load: Load<{ pageParams: { documentId: string } }> = async (params) => {
 		const { page, fetch, session, stuff } = params;
@@ -8,18 +9,19 @@
 
 		const response = await fetch(`/docs/${page.params.documentId}`);
 
-		const res = await response.json();
+		// todo: add try/catch
+		const documentResponse = (await response.json()) as GetDocumentResponse;
 
-		if (res.success) {
+		if (documentResponse.success === true) {
 			return {
 				props: {
-					doc: res
+					doc: documentResponse
 				}
 			};
 		} else {
 			return {
 				status: response.status,
-				error: new Error(`Could not load document with id: ${page.params.documentId}`)
+				error: new Error(`${documentResponse.message}`)
 			};
 		}
 	};

@@ -5,3 +5,5 @@
 export interface Locals {
 	userid?: string;
 }
+
+export type Typify<T> = { [K in keyof T]: Typify<T[K]> };
