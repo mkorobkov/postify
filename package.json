@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@cloudflare/wrangler": "^1.19.4",
-    "@sveltejs/adapter-cloudflare-workers": "^0.0.1",
+    "@sveltejs/adapter-cloudflare-workers": "^1.0.0-next.25",
     "@sveltejs/kit": "next",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
