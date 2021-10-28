@@ -1,2 +1,2 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<p><a href="/existing">Existing post</a></p>
+<p><a href="/non-existent">non-existent post</a></p>
