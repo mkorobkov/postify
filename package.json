@@ -2,7 +2,8 @@
   "name": "postify",
   "version": "0.0.1",
   "scripts": {
-    "dev": "svelte-kit dev",
+    "dev": "miniflare workers-site/index.js",
+    "dev:svelte": "svelte-kit dev",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
