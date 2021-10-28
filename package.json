@@ -2,7 +2,7 @@
   "name": "postify",
   "version": "0.0.1",
   "scripts": {
-    "dev": "miniflare workers-site/index.js",
+    "dev": "miniflare workers-site/index.js --watch",
     "dev:svelte": "svelte-kit dev",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
