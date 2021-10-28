@@ -1,3 +1,5 @@
+import type { JSONContent } from '@tiptap/core';
+
 interface GetDocumentErrorResponse {
 	success: false;
 	message: string;
@@ -18,7 +20,7 @@ export interface GetDocumentData {
 export interface Document {
 	title: string;
 	author: string;
-	content: TipTopJSONContent;
+	content: TipTapJSONContent;
 }
 
-type TipTopJSONContent = unknown;
+export type TipTapJSONContent = JSONContent;

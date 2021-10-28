@@ -1,5 +1,6 @@
 <script>
 	import { navigating } from '$app/stores';
+	import TipTap from '$lib/tip-tap.svelte';
 </script>
 
 {#if $navigating}
@@ -8,3 +9,5 @@
 	<p><a href="/existing">Existing post</a></p>
 	<p><a href="/non-existent">non-existent post</a></p>
 {/if}
+
+<TipTap content={{ type: 'doc' }} />
