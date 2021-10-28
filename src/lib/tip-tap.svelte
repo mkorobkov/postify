@@ -2,14 +2,16 @@
 	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
 	import { Editor } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
-	import { onDestroy, onMount } from 'svelte';
+	import { afterUpdate, onDestroy, onMount } from 'svelte';
 
 	export let content: TipTapJSONContent;
-
-	export let editable: boolean = true;
+	export let editable = true;
 
 	let element;
 	let editor: Editor | undefined;
+
+	$: editor?.commands.setContent(content);
+	$: editor?.setEditable(editable);
 
 	onMount(() => {
 		editor = new Editor({
@@ -17,24 +19,25 @@
 			element,
 			extensions: [StarterKit],
 			content,
-			onTransaction: () => {
-				editor = editor;
+			onUpdate({ editor }) {
+				content = editor.getJSON() as TipTapJSONContent;
 			}
-		});
-
-		editor.on('update', ({ editor }) => {
-			console.log('editor updated value', editor.getHTML());
 		});
 	});
 
 	onDestroy(() => {
 		editor?.destroy();
 	});
+
+	afterUpdate(() => {
+		console.log('TipTap after update...');
+	});
 </script>
 
 <div class="wrapper">
 	<div class="element-wrapper" bind:this={element} />
 </div>
+
 {#if editor}
 	<pre class="json-output">
       {JSON.stringify(editor.getJSON(), null, 2)}

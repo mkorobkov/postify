@@ -33,11 +33,22 @@
 
 	export let doc: GetDocumentData['document'];
 	export let isOwner: boolean;
+
+	let edit = false;
+	let content = doc.content ?? { type: 'doc' };
 </script>
 
 <a href="/">main page</a>
-<h1>Here will be post</h1>
-<div>{isOwner}</div>
+{#if isOwner && !edit}
+	<button on:click={() => (edit = true)}>Edit</button>
+{/if}
+
+{#if edit}
+	<button on:click={() => (edit = !edit)}>Save post</button>
+{/if}
+
 <div>{JSON.stringify(doc)}</div>
 
-<TipTap content={doc.content} editable={isOwner} />
+<TipTap bind:content bind:editable={edit} />
+
+<p>Content array length: {JSON.stringify(content)}</p>
