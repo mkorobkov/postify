@@ -1,2 +1,13 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+	import { navigating } from '$app/stores';
+	import TipTap from '$lib/tip-tap.svelte';
+</script>
+
+{#if $navigating}
+	Loading...
+{:else}
+	<p><a href="/existing">Existing post</a></p>
+	<p><a href="/non-existent">non-existent post</a></p>
+{/if}
+
+<TipTap content={{ type: 'doc' }} />
