@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type { GetDocumentResponse } from './docs/_typings';
+	import type { GetDocumentData, GetDocumentResponse, TipTapJSONContent } from './docs/_typings';
 
 	export const load: Load<{ pageParams: { documentId: string } }> = async (params) => {
 		const { page, fetch, session, stuff } = params;
@@ -15,7 +15,7 @@
 		if (documentResponse.success === true) {
 			return {
 				props: {
-					doc: documentResponse
+					doc: documentResponse.data.document
 				}
 			};
 		} else {
@@ -27,9 +27,13 @@
 	};
 </script>
 
-<script>
-	export let doc;
+<script lang="ts">
+	import TipTap from '$lib/tip-tap.svelte';
+
+	export let doc: GetDocumentData['document'];
 </script>
 
 <h1>Here will be post</h1>
 {JSON.stringify(doc)}
+
+<TipTap content={doc.content} />

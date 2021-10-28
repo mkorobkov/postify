@@ -1,5 +1,7 @@
 import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
+import { mockedDocument } from './_mocked-document';
+
 import type { GetDocumentResponse } from './_typings';
 
 // get document: GET /docs/document-id
@@ -18,7 +20,7 @@ export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> =
 		status: 200,
 		body: {
 			success: true,
-			data: { document: { author: '', content: '', title: '' }, isOwner: false }
+			data: { document: { author: '', content: mockedDocument, title: '' }, isOwner: false }
 		}
 	};
 };
