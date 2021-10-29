@@ -37,11 +37,16 @@
   "type": "module",
   "dependencies": {
     "@tiptap/core": "^2.0.0-beta.129",
+    "@tiptap/html": "^2.0.0-beta.128",
     "@tiptap/starter-kit": "^2.0.0-beta.131"
   },
   "lint-staged": {
     "*.ts": [
       "prettier --write"
     ]
+  },
+  "resolutions": {
+    "prosemirror-model": "^1.14.3",
+    "prosemirror-view": "^1.19.3"
   }
 }
