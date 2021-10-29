@@ -21,7 +21,7 @@ export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> =
 		body: {
 			success: true,
 			data: {
-				document: { author: '', content: mockedDocument, title: '' },
+				document: { author: 'name here', content: mockedDocument, title: 'First document' },
 				isOwner: documentId === 'existing-author'
 			}
 		}

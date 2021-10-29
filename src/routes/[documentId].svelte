@@ -30,13 +30,14 @@
 
 <script lang="ts">
 	import DocumentDetails from '$lib/document-details.svelte';
-	import TipTap from '$lib/tip-tap.svelte';
+	import DocumentForm from '$lib/document-form.svelte';
+	import type { SvelteComponentTyped } from 'svelte';
 
 	export let doc: GetDocumentData['document'];
 	export let isOwner: boolean;
 
 	let edit = false;
-	let content = doc.content ?? { type: 'doc' };
+	let documentForm: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
 </script>
 
 <a href="/">main page</a>
@@ -50,4 +51,12 @@
 
 <!-- <TipTap bind:content bind:editable={edit} /> -->
 
-<DocumentDetails {...doc} />
+{#if edit}
+	<DocumentForm {...doc} bind:this={documentForm} />
+{:else}
+	<DocumentDetails {...doc} />
+{/if}
+
+{#if documentForm}
+	<button on:click={() => documentForm?.submitForm()}>Submit from parent</button>
+{/if}

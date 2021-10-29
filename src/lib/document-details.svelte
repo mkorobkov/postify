@@ -2,9 +2,9 @@
 	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
 	import TipTap from './tip-tap.svelte';
 
-	export let title = '';
-	export let author = '';
-	export let content: TipTapJSONContent = { type: 'doc' };
+	export let title: string;
+	export let author: string;
+	export let content: TipTapJSONContent;
 </script>
 
 <article>
