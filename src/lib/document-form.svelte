@@ -3,9 +3,9 @@
 	import { createEventDispatcher } from 'svelte';
 	import TipTap from './tip-tap.svelte';
 
-	export let title: string;
-	export let author: string;
-	export let content: TipTapJSONContent;
+	export let title: string = '';
+	export let author: string = '';
+	export let content: TipTapJSONContent = { type: 'doc' };
 
 	$: formContent = content;
 	$: formTitle = title;
@@ -17,6 +17,8 @@
 
 	export const submitForm = () => {
 		console.log('[DocumentForm]: please submit form', { formAuthor, formContent, formTitle });
+
+		// todo: validate form...
 
 		dispatch('submit', {
 			author: formAuthor,
