@@ -29,6 +29,7 @@
 </script>
 
 <script lang="ts">
+	import DocumentDetails from '$lib/document-details.svelte';
 	import TipTap from '$lib/tip-tap.svelte';
 
 	export let doc: GetDocumentData['document'];
@@ -52,3 +53,5 @@
 <TipTap bind:content bind:editable={edit} />
 
 <p>Content array length: {JSON.stringify(content)}</p>
+
+<DocumentDetails {...doc} />
