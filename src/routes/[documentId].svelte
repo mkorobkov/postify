@@ -37,7 +37,15 @@
 	export let isOwner: boolean;
 
 	let edit = false;
-	let documentForm: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
+	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
+
+	function handleSubmit(
+		event: CustomEvent<{
+			title: string;
+		}>
+	) {
+		console.log('event', event, event.detail);
+	}
 </script>
 
 <a href="/">main page</a>
@@ -52,11 +60,11 @@
 <!-- <TipTap bind:content bind:editable={edit} /> -->
 
 {#if edit}
-	<DocumentForm {...doc} bind:this={documentForm} />
+	<DocumentForm {...doc} bind:this={documentFormRef} on:submit={handleSubmit} />
 {:else}
 	<DocumentDetails {...doc} />
 {/if}
 
-{#if documentForm}
-	<button on:click={() => documentForm?.submitForm()}>Submit from parent</button>
+{#if documentFormRef}
+	<button on:click={() => documentFormRef?.submitForm()}>Submit from parent</button>
 {/if}

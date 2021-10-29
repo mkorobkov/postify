@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
+	import { createEventDispatcher } from 'svelte';
 	import TipTap from './tip-tap.svelte';
 
 	export let title: string;
@@ -10,8 +11,18 @@
 	$: formTitle = title;
 	$: formAuthor = author;
 
+	const dispatch = createEventDispatcher<{
+		submit: { title: string; author: string; content: TipTapJSONContent };
+	}>();
+
 	export const submitForm = () => {
-		console.log('please submit form', { formAuthor, formContent, formTitle });
+		console.log('[DocumentForm]: please submit form', { formAuthor, formContent, formTitle });
+
+		dispatch('submit', {
+			author: formAuthor,
+			content: formContent,
+			title: formTitle
+		});
 	};
 </script>
 
