@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { tick } from 'svelte';
 	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
 	import { Editor } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
-	import { afterUpdate, onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	export let content: TipTapJSONContent;
 	export let editable = true;
@@ -35,21 +34,11 @@
 	onDestroy(() => {
 		editor?.destroy();
 	});
-
-	afterUpdate(() => {
-		console.log('TipTap after update...');
-	});
 </script>
 
 <div class="wrapper">
 	<div class="element-wrapper" bind:this={element} />
 </div>
-
-{#if editor}
-	<pre class="json-output">
-      {JSON.stringify(editor.getJSON(), null, 2)}
-    </pre>
-{/if}
 
 <style>
 	.wrapper {

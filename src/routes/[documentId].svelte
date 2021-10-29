@@ -48,10 +48,6 @@
 	<button on:click={() => (edit = !edit)}>Save post</button>
 {/if}
 
-<div>{JSON.stringify(doc)}</div>
-
-<TipTap bind:content bind:editable={edit} />
-
-<p>Content array length: {JSON.stringify(content)}</p>
+<!-- <TipTap bind:content bind:editable={edit} /> -->
 
 <DocumentDetails {...doc} />
