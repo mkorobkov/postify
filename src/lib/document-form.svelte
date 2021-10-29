@@ -29,7 +29,7 @@
 </script>
 
 <article>
-	<h1>Edit document</h1>
+	<h1>Document Form</h1>
 	<input bind:value={formTitle} />
 	<input bind:value={formAuthor} />
 	<TipTap bind:content={formContent} editable={true} />
