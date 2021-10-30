@@ -8,9 +8,9 @@ import type { GetDocumentResponse } from './_typings';
 export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> = async (
 	request
 ) => {
-	const { docId } = request.params;
+	const { documentId } = request.params;
 
-	if (docId !== 'existing' && docId !== 'existing-author') {
+	if (documentId !== 'existing' && documentId !== 'existing-author') {
 		return { status: 404, body: { success: false, message: 'err' } };
 	}
 
@@ -20,7 +20,7 @@ export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> =
 			success: true,
 			data: {
 				document: { author: 'name here', content: mockedDocument, title: 'First document' },
-				isOwner: docId === 'existing-author'
+				isOwner: documentId === 'existing-author'
 			}
 		}
 	};
