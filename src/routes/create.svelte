@@ -38,24 +38,35 @@
 </script>
 
 <div class="container">
-	<a href="/">Main page</a>
-
 	<DocumentForm bind:this={documentFormRef} on:submit={handleSubmit} />
-
-	<button on:click={documentFormRef.submitForm} disabled={loading} class="publish">Publish</button>
+	<aside>
+		<a href="/">Main page</a>
+		<button on:click={documentFormRef.submitForm} disabled={loading} class="publish">Publish</button
+		>
+	</aside>
 </div>
 
-<style>
+<style lang="less">
 	.container {
 		position: relative;
+		height: 100%;
+		min-height: 100vh;
+		display: grid;
 	}
+	aside {
+		top: 20px;
+		position: absolute;
+		left: 100%;
+		margin-left: 20px;
+		display: grid;
+		gap: 8px;
+	}
+
 	.publish {
+		cursor: pointer;
 		height: 34px;
 		padding: 0 16px;
 		outline: none;
-		position: absolute;
-		left: 100%;
-		top: 20px;
 		background-color: transparent;
 		border: 2px solid #000000;
 
@@ -66,5 +77,11 @@
 		line-height: 19px;
 		text-transform: uppercase;
 		color: #000000;
+		transition: opacity 0.1s;
+
+		&:disabled {
+			cursor: default;
+			opacity: 0.6;
+		}
 	}
 </style>

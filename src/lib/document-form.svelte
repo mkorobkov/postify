@@ -5,7 +5,7 @@
 
 	export let title: string = '';
 	export let author: string = '';
-	export let content: TipTapJSONContent;
+	export let content: TipTapJSONContent | undefined = undefined;
 
 	$: formContent = content;
 	$: formTitle = title;
@@ -42,8 +42,8 @@
 
 <style lang="less">
 	form {
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-rows: auto auto 1fr;
 	}
 
 	label {

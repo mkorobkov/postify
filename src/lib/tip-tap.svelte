@@ -70,8 +70,7 @@
 
 	.wrapper {
 		border: 1px solid #ccc;
-		display: inline-flex;
-		flex-direction: column;
+		display: grid;
 	}
 
 	.wrapper:focus-within {

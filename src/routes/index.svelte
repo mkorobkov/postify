@@ -12,5 +12,3 @@
 	<p><a href="/existing-author">Existing post (authoring)</a></p>
 	<p><a href="/non-existent">non-existent post</a></p>
 {/if}
-
-<TipTap content={{ type: 'doc' }} />
