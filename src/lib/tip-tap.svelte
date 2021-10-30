@@ -5,11 +5,19 @@
 	import { onDestroy, onMount } from 'svelte';
 
 	export let content: TipTapJSONContent;
-
-	export let editable: boolean = true;
+	export let editable = true;
 
 	let element;
 	let editor: Editor | undefined;
+
+	$: async () => {
+		if (editor) {
+			const cursorPosition = editor.view.state.selection.anchor;
+			editor.commands.setContent(content);
+			editor.commands.setTextSelection(cursorPosition); // prevent moving cursor to the end
+		}
+	};
+	$: editor?.setEditable(editable);
 
 	onMount(() => {
 		editor = new Editor({
@@ -17,13 +25,9 @@
 			element,
 			extensions: [StarterKit],
 			content,
-			onTransaction: () => {
-				editor = editor;
+			onUpdate: async ({ editor }) => {
+				content = editor.getJSON() as TipTapJSONContent;
 			}
-		});
-
-		editor.on('update', ({ editor }) => {
-			console.log('editor updated value', editor.getHTML());
 		});
 	});
 
@@ -35,11 +39,6 @@
 <div class="wrapper">
 	<div class="element-wrapper" bind:this={element} />
 </div>
-{#if editor}
-	<pre class="json-output">
-      {JSON.stringify(editor.getJSON(), null, 2)}
-    </pre>
-{/if}
 
 <style>
 	.wrapper {

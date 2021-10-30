@@ -15,7 +15,8 @@
 		if (documentResponse.success === true) {
 			return {
 				props: {
-					doc: documentResponse.data.document
+					doc: documentResponse.data.document,
+					isOwner: documentResponse.data.isOwner
 				}
 			};
 		} else {
@@ -28,12 +29,42 @@
 </script>
 
 <script lang="ts">
-	import TipTap from '$lib/tip-tap.svelte';
+	import DocumentDetails from '$lib/document-details.svelte';
+	import DocumentForm from '$lib/document-form.svelte';
+	import type { SvelteComponentTyped } from 'svelte';
 
 	export let doc: GetDocumentData['document'];
+	export let isOwner: boolean;
+
+	let edit = false;
+	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
+
+	function handleSubmit(
+		event: CustomEvent<{
+			title: string;
+		}>
+	) {
+		console.log('event', event, event.detail);
+	}
 </script>
 
-<h1>Here will be post</h1>
-{JSON.stringify(doc)}
+<a href="/">main page</a>
+{#if isOwner && !edit}
+	<button on:click={() => (edit = true)}>Edit</button>
+{/if}
 
-<TipTap content={doc.content} />
+{#if edit}
+	<button on:click={() => (edit = !edit)}>Save post</button>
+{/if}
+
+<!-- <TipTap bind:content bind:editable={edit} /> -->
+
+{#if edit}
+	<DocumentForm {...doc} bind:this={documentFormRef} on:submit={handleSubmit} />
+{:else}
+	<DocumentDetails {...doc} />
+{/if}
+
+{#if documentFormRef}
+	<button on:click={() => documentFormRef?.submitForm()}>Submit from parent</button>
+{/if}

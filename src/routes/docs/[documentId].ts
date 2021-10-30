@@ -12,15 +12,18 @@ export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> =
 
 	const { documentId } = request.params;
 
-	if (documentId !== 'existing') {
-		return { status: 404, body: { success: false, message: crypto.randomUUID() } };
+	if (documentId !== 'existing' && documentId !== 'existing-author') {
+		return { status: 404, body: { success: false, message: 'err' } };
 	}
 
 	return {
 		status: 200,
 		body: {
 			success: true,
-			data: { document: { author: '', content: mockedDocument, title: '' }, isOwner: false }
+			data: {
+				document: { author: 'name here', content: mockedDocument, title: 'First document' },
+				isOwner: documentId === 'existing-author'
+			}
 		}
 	};
 };
