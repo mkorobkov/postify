@@ -13,3 +13,7 @@ account_id = '42ba4aca6abe337275b912d53b81721d'
 command = 'npm run build'
 [build.upload]
 format = 'service-worker'
+
+kv_namespaces = [
+    { binding = "DOCUMENT_KV", id = "c9524253bd5542ad9cb4fdbe213dca99" }
+]
