@@ -29,29 +29,40 @@
 </script>
 
 <form on:submit|preventDefault={submitForm}>
-	<label class:has-value={formTitle.length > 0}>
-		<input bind:value={formTitle} class="input title" />
+	<label class:has-value={formTitle.length > 0} class="document-title">
+		<input bind:value={formTitle} />
 		<span>Title</span>
 	</label>
-	<label class:has-value={formAuthor.length > 0}>
-		<input bind:value={formAuthor} class="input author" />
+	<label class:has-value={formAuthor.length > 0} class="document-author">
+		<input bind:value={formAuthor} />
 		<span>Author</span>
 	</label>
-	<TipTap bind:content={formContent} editable={true} />
+	<div class="document-content">
+		<TipTap bind:content={formContent} editable={true} />
+	</div>
 </form>
 
 <style lang="less">
 	form {
 		display: grid;
 		grid-template-rows: auto auto 1fr;
+		padding-top: 32px;
 	}
 
 	label {
 		position: relative;
+		cursor: text;
+
+		input {
+			width: 100%;
+			font-size: inherit;
+			border: none;
+		}
 
 		&.has-value > span {
 			visibility: hidden;
 			right: 100%;
+			margin-right: 12px;
 			left: auto;
 			opacity: 0;
 		}
@@ -64,6 +75,7 @@
 		}
 
 		& > span {
+			user-select: none;
 			touch-action: none;
 			color: rgba(0, 0, 0, 0.4);
 			position: absolute;
@@ -81,12 +93,5 @@
 		font-style: normal;
 		font-weight: normal;
 		color: rgba(0, 0, 0, 0.8);
-	}
-
-	.title {
-		font-size: 24px;
-	}
-	.author {
-		font-size: 16px;
 	}
 </style>

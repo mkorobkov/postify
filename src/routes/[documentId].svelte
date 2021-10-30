@@ -32,6 +32,7 @@
 	import DocumentDetails from '$lib/document-details.svelte';
 	import DocumentForm from '$lib/document-form.svelte';
 	import type { SvelteComponentTyped } from 'svelte';
+	import Layout from '$lib/layout.svelte';
 
 	export let doc: GetDocumentData['document'];
 	export let isOwner: boolean;
@@ -48,23 +49,25 @@
 	}
 </script>
 
-<a href="/">main page</a>
-{#if isOwner && !edit}
-	<button on:click={() => (edit = true)}>Edit</button>
-{/if}
+<Layout>
+	<div slot="aside">
+		<a href="/">Main page</a>
+		{#if isOwner && !edit}
+			<button on:click={() => (edit = true)}>Edit</button>
+		{/if}
 
-{#if edit}
-	<button on:click={() => (edit = !edit)}>Save post</button>
-{/if}
+		{#if edit}
+			<button on:click={() => (edit = !edit)}>Save post</button>
+		{/if}
 
-<!-- <TipTap bind:content bind:editable={edit} /> -->
+		{#if documentFormRef}
+			<button on:click={() => documentFormRef?.submitForm()}>Submit from parent</button>
+		{/if}
+	</div>
 
-{#if edit}
-	<DocumentForm {...doc} bind:this={documentFormRef} on:submit={handleSubmit} />
-{:else}
-	<DocumentDetails {...doc} />
-{/if}
-
-{#if documentFormRef}
-	<button on:click={() => documentFormRef?.submitForm()}>Submit from parent</button>
-{/if}
+	{#if edit}
+		<DocumentForm {...doc} bind:this={documentFormRef} on:submit={handleSubmit} />
+	{:else}
+		<DocumentDetails {...doc} />
+	{/if}
+</Layout>

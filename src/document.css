@@ -1,0 +1,16 @@
+.document-title {
+	color: rgba(0, 0, 0, 0.9);
+	font-size: 32px;
+	margin-bottom: 8px;
+}
+.document-author {
+	color: rgba(0, 0, 0, 0.5);
+	font-size: 22px;
+	margin-bottom: 22px;
+}
+.document-content {
+	color: rgba(0, 0, 0, 0.8);
+	display: grid;
+	gap: 12px;
+	font-size: 20px;
+}

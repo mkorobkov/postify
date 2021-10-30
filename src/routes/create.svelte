@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import DocumentForm from '$lib/document-form.svelte';
 	import type { SvelteComponentTyped } from 'svelte';
+	import Layout from '$lib/layout.svelte';
 
 	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
 	let loading = false;
@@ -37,14 +38,16 @@
 	// todo: when loading, then show spinner upfront the form
 </script>
 
-<div class="container">
-	<DocumentForm bind:this={documentFormRef} on:submit={handleSubmit} />
-	<aside>
+<Layout>
+	<div slot="aside">
 		<a href="/">Main page</a>
 		<button on:click={documentFormRef.submitForm} disabled={loading} class="publish">Publish</button
 		>
-	</aside>
-</div>
+	</div>
+	<div class="container">
+		<DocumentForm bind:this={documentFormRef} on:submit={handleSubmit} />
+	</div>
+</Layout>
 
 <style lang="less">
 	.container {
@@ -52,14 +55,6 @@
 		height: 100%;
 		min-height: 100vh;
 		display: grid;
-	}
-	aside {
-		top: 20px;
-		position: absolute;
-		left: 100%;
-		margin-left: 20px;
-		display: grid;
-		gap: 8px;
 	}
 
 	.publish {

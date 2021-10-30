@@ -12,8 +12,16 @@
 </script>
 
 <article>
-	<h1>Document details</h1>
-	<h2>{title}</h2>
-	<h3>{author}</h3>
-	<div>{@html html}</div>
+	<h1 class="document-title">{title}</h1>
+	<p class="document-author">{author}</p>
+	<div class="document-content">{@html html}</div>
 </article>
+
+<style lang="less">
+	article {
+		padding: 32px 0 0;
+	}
+	h1 {
+		font-weight: normal;
+	}
+</style>

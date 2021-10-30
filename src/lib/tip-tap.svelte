@@ -54,11 +54,8 @@
 
 <style lang="less">
 	:global(.ProseMirror) {
-		min-height: 100%;
-		border: 1px solid lightblue;
-		> * + * {
-			margin-top: 0.75em;
-		}
+		display: grid;
+		gap: 12px;
 	}
 	:global(.is-editor-empty:first-child::before) {
 		content: attr(data-placeholder);
@@ -69,12 +66,12 @@
 	}
 
 	.wrapper {
-		border: 1px solid #ccc;
+		// border: 1px solid #ccc;
 		display: grid;
 	}
 
 	.wrapper:focus-within {
-		border: 1px solid red;
+		// border: 1px solid red;
 	}
 
 	.element-wrapper {
