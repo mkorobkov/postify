@@ -2,6 +2,7 @@
 	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
 	import { Editor } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
+	import BubbleMenu from '@tiptap/extension-bubble-menu';
 	import Placeholder from '@tiptap/extension-placeholder';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -9,6 +10,7 @@
 	export let editable = true;
 
 	let element;
+	let bubbleMenuElement;
 	let editor: Editor | undefined;
 
 	$: async () => {
@@ -24,7 +26,11 @@
 		editor = new Editor({
 			editable,
 			element,
-			extensions: [StarterKit, Placeholder.configure({ placeholder: 'Write something...' })],
+			extensions: [
+				StarterKit,
+				Placeholder.configure({ placeholder: 'Write something...' }),
+				BubbleMenu.configure({ element: bubbleMenuElement })
+			],
 			content,
 			onUpdate: async ({ editor }) => {
 				content = editor.getJSON() as TipTapJSONContent;
@@ -39,6 +45,11 @@
 
 <div class="wrapper">
 	<div class="element-wrapper" bind:this={element} />
+	<div bind:this={bubbleMenuElement} class="bubble">
+		<button>test</button>
+		<button>test</button>
+		<button>test</button>
+	</div>
 </div>
 
 <style lang="less">
