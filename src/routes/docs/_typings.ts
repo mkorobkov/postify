@@ -18,9 +18,15 @@ export interface GetDocumentData {
 }
 
 export interface Document {
+	documentId: string;
+	authorId: string;
+	isEncrypted: boolean;
+	/* if encrypted all the values below should be encrypted on the client */
 	title: string;
 	author: string;
 	content: TipTapJSONContent;
 }
 
 export type TipTapJSONContent = JSONContent;
+
+export type PostDocumentInput = Omit<Document, 'documentId' | 'authorId'>;
