@@ -54,6 +54,8 @@
 
 <style lang="less">
 	:global(.ProseMirror) {
+		min-height: 100%;
+		border: 1px solid lightblue;
 		> * + * {
 			margin-top: 0.75em;
 		}
@@ -68,7 +70,6 @@
 
 	.wrapper {
 		border: 1px solid #ccc;
-		max-height: 200px;
 		display: inline-flex;
 		flex-direction: column;
 	}
@@ -78,10 +79,12 @@
 	}
 
 	.element-wrapper {
-		padding: 1rem;
-		flex: 1 1 0%;
-		resize: both;
-		overflow: auto;
+		height: auto;
+		width: 100%;
+		// padding: 1rem;
+		// flex: 1 1 0%;
+		// resize: both;
+		// overflow: auto;
 	}
 
 	.element-wrapper :global(p:first-of-type) {
@@ -94,13 +97,5 @@
 
 	.element-wrapper > :global(.ProseMirror) {
 		outline: 0;
-	}
-
-	.json-output,
-	.html-output {
-		max-height: 200px;
-		overflow: hidden;
-		overflow-y: auto;
-		border: 1px solid #ccc;
 	}
 </style>
