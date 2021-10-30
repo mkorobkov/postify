@@ -2,6 +2,7 @@
 	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
 	import { Editor } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
+	import Placeholder from '@tiptap/extension-placeholder';
 	import { onDestroy, onMount } from 'svelte';
 
 	export let content: TipTapJSONContent;
@@ -23,7 +24,7 @@
 		editor = new Editor({
 			editable,
 			element,
-			extensions: [StarterKit],
+			extensions: [StarterKit, Placeholder.configure({ placeholder: 'Write something...' })],
 			content,
 			onUpdate: async ({ editor }) => {
 				content = editor.getJSON() as TipTapJSONContent;
@@ -40,7 +41,20 @@
 	<div class="element-wrapper" bind:this={element} />
 </div>
 
-<style>
+<style lang="less">
+	:global(.ProseMirror) {
+		> * + * {
+			margin-top: 0.75em;
+		}
+	}
+	:global(.is-editor-empty:first-child::before) {
+		content: attr(data-placeholder);
+		float: left;
+		color: #adb5bd;
+		pointer-events: none;
+		height: 0;
+	}
+
 	.wrapper {
 		border: 1px solid #ccc;
 		max-height: 200px;

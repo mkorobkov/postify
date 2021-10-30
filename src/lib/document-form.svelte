@@ -5,7 +5,7 @@
 
 	export let title: string = '';
 	export let author: string = '';
-	export let content: TipTapJSONContent = { type: 'doc' };
+	export let content: TipTapJSONContent;
 
 	$: formContent = content;
 	$: formTitle = title;
