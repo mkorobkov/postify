@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Editor } from '@tiptap/core';
+
 	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
 	import { createEventDispatcher } from 'svelte';
 	import TipTap from './tip-tap.svelte';
@@ -10,6 +12,7 @@
 	$: formContent = content;
 	$: formTitle = title;
 	$: formAuthor = author;
+	let editor: Editor | undefined; // to focus from outside
 
 	const dispatch = createEventDispatcher<{
 		submit: { title: string; author: string; content: TipTapJSONContent };
@@ -26,6 +29,10 @@
 			title: formTitle
 		});
 	};
+
+	export const focusContent = () => {
+		editor.commands.focus('end');
+	};
 </script>
 
 <form on:submit|preventDefault={submitForm}>
@@ -38,7 +45,7 @@
 		<span>Author</span>
 	</label>
 	<div class="document-content">
-		<TipTap bind:content={formContent} editable={true} />
+		<TipTap bind:content={formContent} bind:editor editable={true} />
 	</div>
 </form>
 

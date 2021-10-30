@@ -38,7 +38,13 @@
 	export let isOwner: boolean;
 
 	let edit = false;
-	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
+	let documentFormRef:
+		| (SvelteComponentTyped & { submitForm(): unknown; focusContent(): unknown })
+		| undefined;
+
+	$: if (edit) {
+		documentFormRef?.focusContent();
+	}
 
 	function handleSubmit(
 		event: CustomEvent<{

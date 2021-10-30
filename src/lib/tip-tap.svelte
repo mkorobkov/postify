@@ -11,7 +11,7 @@
 
 	let element;
 	let bubbleMenuElement;
-	let editor: Editor | undefined;
+	export let editor: Editor | undefined;
 
 	$: async () => {
 		if (editor) {
