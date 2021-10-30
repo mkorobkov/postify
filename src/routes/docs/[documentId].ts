@@ -8,8 +8,6 @@ import type { GetDocumentResponse } from './_typings';
 export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> = async (
 	request
 ) => {
-	console.log('[docs get request]', request);
-
 	const { documentId } = request.params;
 
 	if (documentId !== 'existing' && documentId !== 'existing-author') {

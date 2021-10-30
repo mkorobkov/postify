@@ -7,8 +7,6 @@ export const post: RequestHandler<Locals> = async (request) => {
 	try {
 		const parsedBody = JSON.parse(request.body as string) as { title: string };
 
-		// console.log(request.locals.userid);
-
 		await new Promise((resolve) => setTimeout(resolve, 2000));
 
 		return {
