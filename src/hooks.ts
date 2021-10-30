@@ -14,7 +14,7 @@ export const handle: Handle<Locals> = async ({ request, resolve }) => {
   const cookie = parse(request.headers['cookie'] || '');
   const signedToken = cookie[AUTH_COOKIE_NAME];
   if (signedToken) {
-    const isValid = await jwt.verify(signedToken, global.JWT_SECRET);
+    const isValid = await jwt.verify(signedToken, JWT_SECRET);
     if (isValid) {
       request.locals.user = jwt.decode(signedToken) as User;
     }
