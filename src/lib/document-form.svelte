@@ -28,10 +28,40 @@
 	};
 </script>
 
-<article>
-	<h1>Document Form</h1>
-	<input bind:value={formTitle} />
-	<input bind:value={formAuthor} />
+<form on:submit|preventDefault={submitForm}>
+	<label>
+		<span>Title</span>
+		<input bind:value={formTitle} class="input title" placeholder="Title" />
+	</label>
+	<label>
+		<span>Author</span>
+		<input bind:value={formAuthor} class="input author" placeholder="Author" />
+	</label>
 	<TipTap bind:content={formContent} editable={true} />
-	<button on:click={submitForm}>Form submit</button>
-</article>
+</form>
+
+<style lang="less">
+	form {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.input {
+		border: none;
+		outline: none;
+		font-family: Roboto, sans-serif;
+		font-style: normal;
+		font-weight: normal;
+		color: rgba(0, 0, 0, 0.4);
+		&::placeholder {
+			color: red;
+		}
+	}
+
+	.title {
+		font-size: 24px;
+	}
+	.author {
+		font-size: 16px;
+	}
+</style>
