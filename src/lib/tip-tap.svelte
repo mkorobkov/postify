@@ -2,12 +2,15 @@
 	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
 	import { Editor } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
+	import BubbleMenu from '@tiptap/extension-bubble-menu';
+	import Placeholder from '@tiptap/extension-placeholder';
 	import { onDestroy, onMount } from 'svelte';
 
 	export let content: TipTapJSONContent;
 	export let editable = true;
 
 	let element;
+	let bubbleMenuElement;
 	let editor: Editor | undefined;
 
 	$: async () => {
@@ -23,7 +26,11 @@
 		editor = new Editor({
 			editable,
 			element,
-			extensions: [StarterKit],
+			extensions: [
+				StarterKit,
+				Placeholder.configure({ placeholder: 'Write something...' }),
+				BubbleMenu.configure({ element: bubbleMenuElement })
+			],
 			content,
 			onUpdate: async ({ editor }) => {
 				content = editor.getJSON() as TipTapJSONContent;
@@ -38,14 +45,32 @@
 
 <div class="wrapper">
 	<div class="element-wrapper" bind:this={element} />
+	<div bind:this={bubbleMenuElement} class="bubble">
+		<button>test</button>
+		<button>test</button>
+		<button>test</button>
+	</div>
 </div>
 
-<style>
+<style lang="less">
+	:global(.ProseMirror) {
+		min-height: 100%;
+		border: 1px solid lightblue;
+		> * + * {
+			margin-top: 0.75em;
+		}
+	}
+	:global(.is-editor-empty:first-child::before) {
+		content: attr(data-placeholder);
+		float: left;
+		color: #adb5bd;
+		pointer-events: none;
+		height: 0;
+	}
+
 	.wrapper {
 		border: 1px solid #ccc;
-		max-height: 200px;
-		display: inline-flex;
-		flex-direction: column;
+		display: grid;
 	}
 
 	.wrapper:focus-within {
@@ -53,10 +78,12 @@
 	}
 
 	.element-wrapper {
-		padding: 1rem;
-		flex: 1 1 0%;
-		resize: both;
-		overflow: auto;
+		height: auto;
+		width: 100%;
+		// padding: 1rem;
+		// flex: 1 1 0%;
+		// resize: both;
+		// overflow: auto;
 	}
 
 	.element-wrapper :global(p:first-of-type) {
@@ -69,13 +96,5 @@
 
 	.element-wrapper > :global(.ProseMirror) {
 		outline: 0;
-	}
-
-	.json-output,
-	.html-output {
-		max-height: 200px;
-		overflow: hidden;
-		overflow-y: auto;
-		border: 1px solid #ccc;
 	}
 </style>
