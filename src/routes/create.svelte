@@ -37,8 +37,34 @@
 	// todo: when loading, then show spinner upfront the form
 </script>
 
-<a href="/">Main page</a>
+<div class="container">
+	<a href="/">Main page</a>
 
-<DocumentForm bind:this={documentFormRef} on:submit={handleSubmit} />
+	<DocumentForm bind:this={documentFormRef} on:submit={handleSubmit} />
 
-<button on:click={documentFormRef.submitForm} disabled={loading}>Publish</button>
+	<button on:click={documentFormRef.submitForm} disabled={loading} class="publish">Publish</button>
+</div>
+
+<style>
+	.container {
+		position: relative;
+	}
+	.publish {
+		height: 34px;
+		padding: 0 16px;
+		outline: none;
+		position: absolute;
+		left: 100%;
+		top: 20px;
+		background-color: transparent;
+		border: 2px solid #000000;
+
+		font-family: Roboto, sans-serif;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 16px;
+		line-height: 19px;
+		text-transform: uppercase;
+		color: #000000;
+	}
+</style>
