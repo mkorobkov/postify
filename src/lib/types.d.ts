@@ -3,7 +3,11 @@
  * inside `global.d.ts` and removing `export` keyword
  */
 export interface Locals {
-	userid?: string;
+	user?: User;
+}
+
+export interface User {
+	id: string;
 }
 
 // https://github.com/sveltejs/kit/issues/1997
