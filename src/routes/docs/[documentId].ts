@@ -1,8 +1,34 @@
 import { dev } from '$app/env';
 import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
+import type { EndpointOutput } from '@sveltejs/kit/types/endpoint';
 import { mockedDocument } from './_mocked-document';
-import type { Document, GetDocumentResponse, PutDocumentResponse } from './_typings';
+import type {
+	Document,
+	GetDocumentResponse,
+	PutDocumentInput,
+	PutDocumentResponse,
+} from './_typings';
+
+function notFoundResponse(): EndpointOutput {
+	return {
+		status: 404,
+		body: {
+			success: false,
+			message: 'Document is not found',
+		},
+	};
+}
+
+function documentResponse(document: Document, isOwner: boolean): EndpointOutput<any> {
+	return {
+		status: 200,
+		body: {
+			success: true,
+			data: { document, isOwner },
+		},
+	};
+}
 
 async function getDocumentByRequest(request): Promise<Document | undefined> {
 	let document: Document;
@@ -61,22 +87,11 @@ export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> =
 	}
 
 	if (document) {
-		return {
-			status: 200,
-			body: {
-				success: true,
-				data: { document, isOwner: document.authorId === request.locals.user.id },
-			},
-		};
+		const isOwner = document.authorId === request.locals.user.id;
+		return documentResponse(document, isOwner);
 	}
 
-	return {
-		status: 404,
-		body: {
-			success: false,
-			message: 'Document is not found',
-		},
-	};
+	return notFoundResponse();
 };
 
 // replace document PUT /docs/docId
