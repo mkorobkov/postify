@@ -2,14 +2,7 @@ import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
 import { v4 as uuid } from '@lukeed/uuid';
 
-import { mockedDocument } from './_mocked-document';
-
-import type {
-	Document,
-	PostDocumentInput,
-	PostDocumentResponse,
-	PutDocumentResponse,
-} from './_typings';
+import type { Document, PostDocumentInput, PostDocumentResponse } from './_typings';
 
 export const post: RequestHandler<Locals, PostDocumentInput, Typify<PostDocumentResponse>> = async (
 	request
@@ -20,7 +13,6 @@ export const post: RequestHandler<Locals, PostDocumentInput, Typify<PostDocument
 		if (typeof isEncrypted !== 'boolean')
 			throw new Error('Bad isEncrypted param. Should be boolean.');
 		if (typeof title !== 'string') throw new Error('Bad title param. Should be string.');
-		if (typeof author !== 'string') throw new Error('Bad author param. Should be string.');
 		if (typeof content !== 'object') throw new Error('Bad content param. Should be object.');
 
 		const document: Document = {
@@ -28,7 +20,7 @@ export const post: RequestHandler<Locals, PostDocumentInput, Typify<PostDocument
 			authorId: request.locals.user.id,
 			isEncrypted,
 			title,
-			author,
+			author: author ?? '',
 			content,
 		};
 

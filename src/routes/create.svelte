@@ -20,8 +20,7 @@
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(body),
 		});
-
-		const result = (await res.json()) as PostDocumentResponse;
+		const result = await res.json<PostDocumentResponse>();
 
 		if (result.success === false) {
 			throw new Error(result?.message);
