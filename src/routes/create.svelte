@@ -46,7 +46,6 @@
 
 <Layout>
 	<div slot="aside">
-		<Button href="/">Main page</Button>
 		<Button on:click={documentFormRef.submitForm} disabled={loading}>Publish</Button>
 	</div>
 	<div class="container">

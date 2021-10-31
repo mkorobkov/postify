@@ -8,9 +8,7 @@
 	} from './docs/_typings';
 
 	export const load: Load<{ pageParams: { documentId: string } }> = async (params) => {
-		const { page, fetch, session, stuff } = params;
-
-		console.log('load page', page.params.documentId);
+		const { page, fetch } = params;
 
 		const response = await fetch(`/docs/${page.params.documentId}`);
 
@@ -20,7 +18,7 @@
 		if (documentResponse.success === true) {
 			return {
 				props: {
-					doc: documentResponse.data.document,
+					loadedDocument: documentResponse.data.document,
 					isOwner: documentResponse.data.isOwner,
 				},
 			};
@@ -40,13 +38,13 @@
 	import Layout from '$lib/layout.svelte';
 	import Button from '$lib/button.svelte';
 
-	export let doc: Document;
+	export let loadedDocument: Document;
 	export let isOwner: boolean;
 
 	let key = {};
 
-	$: if (doc) {
-		key = {}; // remount DocumentForm to restart its state
+	$: if (loadedDocument) {
+		key = {}; // remount DocumentForm to reset its state
 	}
 
 	let edit = false;
@@ -59,7 +57,7 @@
 			isEncrypted: false,
 		};
 
-		const res = await fetch(`/docs/${doc.documentId}`, {
+		const res = await fetch(`/docs/${loadedDocument.documentId}`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(body),
@@ -79,7 +77,7 @@
 
 		try {
 			const result = await updateDocument(event.detail);
-			doc = result.document;
+			loadedDocument = result.document;
 			isOwner = result.isOwner;
 			edit = false;
 		} catch (err) {
@@ -92,8 +90,6 @@
 
 <Layout>
 	<div slot="aside" class="aside-content">
-		<Button href="/create">Main page</Button>
-
 		{#if isOwner && !edit}
 			<Button on:click={() => (edit = true)}>Edit</Button>
 		{/if}
@@ -101,25 +97,20 @@
 		{#if documentFormRef}
 			<Button on:click={() => documentFormRef?.submitForm()}>Update</Button>
 		{/if}
-		{#if doc}
-			<Button on:click={() => (doc.content = undefined)}>Reset content</Button>
-			<Button on:click={() => (doc.title = undefined)}>Reset title</Button>
-			<Button on:click={() => (doc.author = 'new author')}>Reset author</Button>
-		{/if}
 	</div>
 
 	{#if edit}
 		{#key key}
 			<DocumentForm
-				{loading}
-				document={doc}
-				bind:this={documentFormRef}
-				on:submit={handleSubmit}
 				autoFocus="content"
+				bind:this={documentFormRef}
+				document={loadedDocument}
+				on:submit={handleSubmit}
+				{loading}
 			/>
 		{/key}
 	{:else}
-		<DocumentDetails document={doc} />
+		<DocumentDetails document={loadedDocument} />
 	{/if}
 </Layout>
 
