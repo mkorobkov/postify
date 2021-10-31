@@ -1,41 +1,15 @@
 import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
-import { v4 as uuid } from '@lukeed/uuid';
-
-import type { Document, PostDocumentInput, PostDocumentResponse } from './_typings';
+import type { PostDocumentInput, PostDocumentResponse } from './_typings';
+import { createDocumentAndReturn, documentResponse } from './_utils';
 
 export const post: RequestHandler<Locals, PostDocumentInput, Typify<PostDocumentResponse>> = async (
 	request
 ) => {
 	try {
-		const { isEncrypted, title, author, content } = request.body;
+		const document = await createDocumentAndReturn(request);
 
-		if (typeof isEncrypted !== 'boolean')
-			throw new Error('Bad isEncrypted param. Should be boolean.');
-		if (typeof title !== 'string') throw new Error('Bad title param. Should be string.');
-		if (typeof content !== 'object') throw new Error('Bad content param. Should be object.');
-
-		const document: Document = {
-			documentId: uuid(),
-			authorId: request.locals.user.id,
-			isEncrypted,
-			title,
-			author: author ?? '',
-			content,
-		};
-
-		await DOCUMENTS_KV.put(document.documentId, JSON.stringify(document));
-
-		return {
-			status: 200,
-			body: {
-				success: true,
-				data: {
-					isOwner: document.authorId === request.locals.user.id,
-					document,
-				},
-			},
-		};
+		return documentResponse(document, true);
 	} catch (err) {
 		let badRequestError = true;
 		if (
