@@ -1,4 +1,8 @@
-import type { DocumentInfo, PutDocumentInput, PutDocumentResponse } from 'src/routes/documents/_typings';
+import type {
+	DocumentInfo,
+	PutDocumentInput,
+	PutDocumentResponse,
+} from 'src/routes/documents/_typings';
 
 export async function updateDocument(
 	data: PutDocumentInput,
