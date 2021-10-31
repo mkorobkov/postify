@@ -1,3 +1,23 @@
+<script context="module" lang="ts">
+	export type BubbleMenuState = {
+		bold?: boolean;
+		italic?: boolean;
+		headingOne?: boolean;
+		headingTwo?: boolean;
+		quote?: boolean;
+	};
+
+	export function calcBubbleMenuState(editor: Editor): BubbleMenuState {
+		return {
+			bold: editor?.isActive('bold'),
+			italic: editor?.isActive('italic'),
+			headingOne: editor?.isActive('heading', { level: 1 }),
+			headingTwo: editor?.isActive('heading', { level: 2 }),
+			quote: editor?.isActive('blockquote'),
+		};
+	}
+</script>
+
 <script lang="ts">
 	import type { Editor } from '@tiptap/core';
 	import BoldIcon from '../assets/bold.svg?component';
@@ -8,42 +28,30 @@
 
 	export let ref;
 	export let editor: Editor;
-	export let rerender: {};
-
-	let bold = false;
-	let italic = false;
-	let headingOne = false;
-	let headingTwo = false;
-	let quote = false;
-
-	$: if (rerender) {
-		bold = editor?.isActive('bold');
-		italic = editor?.isActive('italic');
-		headingOne = editor?.isActive('heading', { level: 1 });
-		headingTwo = editor?.isActive('heading', { level: 2 });
-		quote = editor?.isActive('blockquote');
-	}
+	export let state: BubbleMenuState = {};
 </script>
 
 <div bind:this={ref} class:ready={!!editor}>
-	<button type="button" class:active={bold} on:click={() => editor.commands.toggleBold()}
+	<button type="button" class:active={state.bold} on:click={() => editor.commands.toggleBold()}
 		><BoldIcon /></button
 	>
-	<button type="button" class:active={italic} on:click={() => editor.commands.toggleItalic()}
+	<button type="button" class:active={state.italic} on:click={() => editor.commands.toggleItalic()}
 		><ItalicIcon /></button
 	>
 	<button
 		type="button"
-		class:active={headingOne}
+		class:active={state.headingOne}
 		on:click={() => editor.commands.toggleHeading({ level: 1 })}><H1Icon /></button
 	>
 	<button
 		type="button"
-		class:active={headingTwo}
+		class:active={state.headingTwo}
 		on:click={() => editor.commands.toggleHeading({ level: 2 })}><H2Icon /></button
 	>
-	<button type="button" class:active={quote} on:click={() => editor.commands.toggleBlockquote()}
-		><QuoteIcon /></button
+	<button
+		type="button"
+		class:active={state.quote}
+		on:click={() => editor.commands.toggleBlockquote()}><QuoteIcon /></button
 	>
 </div>
 

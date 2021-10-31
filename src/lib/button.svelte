@@ -13,6 +13,7 @@
 
 <style lang="less">
 	.button {
+		user-select: none;
 		width: 100%;
 		white-space: nowrap;
 		cursor: pointer;
