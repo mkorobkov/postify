@@ -13,6 +13,7 @@
 
 <style lang="less">
 	.button {
+		width: 100%;
 		white-space: nowrap;
 		cursor: pointer;
 		padding: 8px 16px;

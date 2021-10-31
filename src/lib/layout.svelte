@@ -34,6 +34,7 @@
 		top: 32px;
 		position: absolute;
 		left: 100%;
+		width: 120px;
 		margin-left: 20px;
 		display: grid;
 		gap: 8px;
