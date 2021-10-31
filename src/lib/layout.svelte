@@ -24,6 +24,9 @@
 		<p>
 			Delivered and hosted by <a href="https://workers.dev" target="_blank">Cloudflare workers</a>
 		</p>
+		<p>
+			Source code: <a href="https://github.dev" target="_blank">Github</a>
+		</p>
 	</footer>
 </div>
 
