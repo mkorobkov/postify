@@ -1,6 +1,5 @@
 <script>
 	import { navigating } from '$app/stores';
-	import TipTap from '$lib/tip-tap.svelte';
 	import Layout from '$lib/layout.svelte';
 </script>
 

@@ -12,7 +12,7 @@
 
 	let element;
 	let bubbleMenuElement;
-	export let editor: Editor | undefined;
+	let editor: Editor | undefined;
 
 	$: async () => {
 		if (editor) {
@@ -31,12 +31,12 @@
 			extensions: [
 				StarterKit,
 				Placeholder.configure({ placeholder: 'Write something...' }),
-				BubbleMenu.configure({ element: bubbleMenuElement })
+				BubbleMenu.configure({ element: bubbleMenuElement }),
 			],
 			content,
 			onUpdate: async ({ editor }) => {
 				content = editor.getJSON() as TipTapJSONContent;
-			}
+			},
 		});
 	});
 

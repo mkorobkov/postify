@@ -43,6 +43,12 @@
 	export let doc: Document;
 	export let isOwner: boolean;
 
+	let key = {};
+
+	$: if (doc) {
+		key = {}; // remount DocumentForm to restart its state
+	}
+
 	let edit = false;
 	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
 	let loading = false;
@@ -51,10 +57,9 @@
 		const body: PutDocumentInput = {
 			...data,
 			isEncrypted: false,
-			documentId: 'doc-id',
 		};
 
-		const res = await fetch('/docs', {
+		const res = await fetch(`/docs/${doc.documentId}`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(body),
@@ -90,25 +95,29 @@
 		<Button href="/create">Main page</Button>
 
 		{#if isOwner && !edit}
-			<Button on:click={() => (edit = true)}>Edit post</Button>
-		{/if}
-		{#if !edit}
-			<Button href="/create">Create new</Button>
+			<Button on:click={() => (edit = true)}>Edit</Button>
 		{/if}
 
 		{#if documentFormRef}
-			<Button on:click={() => documentFormRef?.submitForm()}>Submit from parent</Button>
+			<Button on:click={() => documentFormRef?.submitForm()}>Update</Button>
+		{/if}
+		{#if doc}
+			<Button on:click={() => (doc.content = undefined)}>Reset content</Button>
+			<Button on:click={() => (doc.title = 'new title')}>Reset title</Button>
+			<Button on:click={() => (doc.author = 'new author')}>Reset author</Button>
 		{/if}
 	</div>
 
 	{#if edit}
-		<DocumentForm
-			{loading}
-			{...doc}
-			bind:this={documentFormRef}
-			on:submit={handleSubmit}
-			autoFocus="content"
-		/>
+		{#key key}
+			<DocumentForm
+				{loading}
+				document={doc}
+				bind:this={documentFormRef}
+				on:submit={handleSubmit}
+				autoFocus="content"
+			/>
+		{/key}
 	{:else}
 		<DocumentDetails {...doc} />
 	{/if}

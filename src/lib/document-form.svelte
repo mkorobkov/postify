@@ -3,22 +3,21 @@
 </script>
 
 <script lang="ts">
-	import type { Editor } from '@tiptap/core';
-
-	import type { Document, TipTapJSONContent } from 'src/routes/docs/_typings';
+	import type { Document } from 'src/routes/docs/_typings';
 	import { createEventDispatcher } from 'svelte';
 	import TipTap from './tip-tap.svelte';
 
 	export let loading = false;
 	export let autoFocus: 'title' | 'content' = 'title';
-	export let title: string = '';
-	export let author: string = '';
-	export let content: TipTapJSONContent | undefined = undefined;
 
-	$: formContent = content;
-	$: formTitle = title;
-	$: formAuthor = author;
-	let editor: Editor | undefined; // to focus from outside
+	export let document: Readonly<Partial<FormDocument>> = {
+		author: '',
+		title: '',
+	};
+
+	let formContent = document.content;
+	let formTitle = document.title;
+	let formAuthor = document.author;
 
 	const dispatch = createEventDispatcher<{
 		submit: FormDocument;
@@ -26,8 +25,6 @@
 
 	export const submitForm = () => {
 		console.log('[DocumentForm]: please submit form', { formAuthor, formContent, formTitle });
-
-		// todo: validate form...
 
 		dispatch('submit', {
 			author: formAuthor,
@@ -49,12 +46,7 @@
 		<span>Author</span>
 	</label>
 	<div class="document-content">
-		<TipTap
-			bind:content={formContent}
-			bind:editor
-			editable={true}
-			autoFocus={autoFocus === 'content'}
-		/>
+		<TipTap bind:content={formContent} editable={true} autoFocus={autoFocus === 'content'} />
 	</div>
 </form>
 
@@ -116,14 +108,5 @@
 			transform: translateY(-50%);
 			transition: opacity 0.3s;
 		}
-	}
-
-	.input {
-		border: none;
-		outline: none;
-		font-family: Roboto, sans-serif;
-		font-style: normal;
-		font-weight: normal;
-		color: rgba(0, 0, 0, 0.8);
 	}
 </style>
