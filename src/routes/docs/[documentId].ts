@@ -4,31 +4,40 @@ import type { RequestHandler } from '@sveltejs/kit';
 import { mockedDocument } from './_mocked-document';
 import type { Document, GetDocumentResponse, PutDocumentResponse } from './_typings';
 
+async function getDocumentByRequest(request): Promise<Document | undefined> {
+	let document: Document;
+	const { documentId } = request.params;
+
+	if (documentId) {
+		/* try to get document from cache */
+		try {
+			const cached = await DOCUMENTS_KV.get(documentId, { type: 'json' });
+			if (cached !== null) {
+				document = cached as Document;
+			}
+		} catch {
+			/* ignore error on JSON.parse */
+		}
+
+		// if document is not found on cache
+		// or user requesting the document is the author(we should take document from storage instead of cache)
+		if (!document || document.authorId === request.locals.user.id) {
+			// todo try to get from data storage
+			// document =
+		}
+	}
+
+	return document;
+}
+
 export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> = async (
 	request
 ) => {
-	const { documentId } = request.params;
-
-	let document: Document;
-
-	/* try to get document from cache */
-	try {
-		const cached = await DOCUMENTS_KV.get(documentId, { type: 'json' });
-		if (cached !== null) {
-			document = cached as Document;
-		}
-	} catch {
-		/* ignore error on JSON.parse */
-	}
-
-	// if document is not found on cache
-	// or user requesting the document is the author(we should take document from storage instead of cache)
-	if (!document || document.authorId === request.locals.user.id) {
-		// todo try to get from data storage
-		// document =
-	}
+	const document = await getDocumentByRequest(request);
 
 	if (dev) {
+		const { documentId } = request.params;
+
 		if (documentId !== 'existing' && documentId !== 'existing-author') {
 			return { status: 404, body: { success: false, message: 'err' } };
 		}
