@@ -3,6 +3,7 @@
 	import DocumentForm from '$lib/document-form.svelte';
 	import type { SvelteComponentTyped } from 'svelte';
 	import Layout from '$lib/layout.svelte';
+	import Button from '$lib/button.svelte';
 
 	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
 	let loading = false;
@@ -41,7 +42,7 @@
 <Layout>
 	<div slot="aside">
 		<a href="/">Main page</a>
-		<button on:click={documentFormRef.submitForm} disabled={loading} class="publish">Publish</button
+		<Button on:click={documentFormRef.submitForm} disabled={loading} class="publish">Publish</Button
 		>
 	</div>
 	<div class="container">
@@ -55,28 +56,5 @@
 		height: 100%;
 		min-height: 100vh;
 		display: grid;
-	}
-
-	.publish {
-		cursor: pointer;
-		height: 34px;
-		padding: 0 16px;
-		outline: none;
-		background-color: transparent;
-		border: 2px solid #000000;
-
-		font-family: Roboto, sans-serif;
-		font-style: normal;
-		font-weight: normal;
-		font-size: 16px;
-		line-height: 19px;
-		text-transform: uppercase;
-		color: #000000;
-		transition: opacity 0.1s;
-
-		&:disabled {
-			cursor: default;
-			opacity: 0.6;
-		}
 	}
 </style>

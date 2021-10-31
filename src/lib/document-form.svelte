@@ -5,6 +5,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import TipTap from './tip-tap.svelte';
 
+	export let autoFocus: 'title' | 'content' = 'title';
 	export let title: string = '';
 	export let author: string = '';
 	export let content: TipTapJSONContent | undefined = undefined;
@@ -29,15 +30,12 @@
 			title: formTitle
 		});
 	};
-
-	export const focusContent = () => {
-		editor.commands.focus('end');
-	};
 </script>
 
 <form on:submit|preventDefault={submitForm}>
 	<label class:has-value={formTitle.length > 0} class="document-title">
-		<input bind:value={formTitle} />
+		<!-- svelte-ignore a11y-autofocus -->
+		<input bind:value={formTitle} autofocus={autoFocus === 'title'} />
 		<span>Title</span>
 	</label>
 	<label class:has-value={formAuthor.length > 0} class="document-author">
@@ -45,7 +43,12 @@
 		<span>Author</span>
 	</label>
 	<div class="document-content">
-		<TipTap bind:content={formContent} bind:editor editable={true} />
+		<TipTap
+			bind:content={formContent}
+			bind:editor
+			editable={true}
+			autoFocus={autoFocus === 'content'}
+		/>
 	</div>
 </form>
 

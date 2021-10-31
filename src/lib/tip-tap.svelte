@@ -8,6 +8,7 @@
 
 	export let content: TipTapJSONContent;
 	export let editable = true;
+	export let autoFocus = false;
 
 	let element;
 	let bubbleMenuElement;
@@ -26,6 +27,7 @@
 		editor = new Editor({
 			editable,
 			element,
+			autofocus: autoFocus ? 'end' : false,
 			extensions: [
 				StarterKit,
 				Placeholder.configure({ placeholder: 'Write something...' }),

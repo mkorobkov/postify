@@ -33,18 +33,13 @@
 	import DocumentForm from '$lib/document-form.svelte';
 	import type { SvelteComponentTyped } from 'svelte';
 	import Layout from '$lib/layout.svelte';
+	import Button from '$lib/button.svelte';
 
 	export let doc: GetDocumentData['document'];
 	export let isOwner: boolean;
 
 	let edit = false;
-	let documentFormRef:
-		| (SvelteComponentTyped & { submitForm(): unknown; focusContent(): unknown })
-		| undefined;
-
-	$: if (edit) {
-		documentFormRef?.focusContent();
-	}
+	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
 
 	function handleSubmit(
 		event: CustomEvent<{
@@ -56,24 +51,40 @@
 </script>
 
 <Layout>
-	<div slot="aside">
-		<a href="/">Main page</a>
+	<div slot="aside" class="aside-content">
+		<Button href="/create">Main page</Button>
+
 		{#if isOwner && !edit}
-			<button on:click={() => (edit = true)}>Edit</button>
+			<Button on:click={() => (edit = true)}>Edit post</Button>
+		{/if}
+		{#if !edit}
+			<Button href="/create">Create new</Button>
 		{/if}
 
 		{#if edit}
-			<button on:click={() => (edit = !edit)}>Save post</button>
+			<Button on:click={() => (edit = !edit)}>Save post</Button>
 		{/if}
 
 		{#if documentFormRef}
-			<button on:click={() => documentFormRef?.submitForm()}>Submit from parent</button>
+			<Button on:click={() => documentFormRef?.submitForm()}>Submit from parent</Button>
 		{/if}
 	</div>
 
 	{#if edit}
-		<DocumentForm {...doc} bind:this={documentFormRef} on:submit={handleSubmit} />
+		<DocumentForm
+			{...doc}
+			bind:this={documentFormRef}
+			on:submit={handleSubmit}
+			autoFocus="content"
+		/>
 	{:else}
 		<DocumentDetails {...doc} />
 	{/if}
 </Layout>
+
+<style>
+	.aside-content {
+		display: grid;
+		gap: 8px;
+	}
+</style>
