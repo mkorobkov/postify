@@ -18,6 +18,8 @@
 <style>
 	main {
 		display: grid;
+		align-content: flex-start;
+		grid-template-rows: 1fr;
 	}
 	.wrapper {
 		position: relative;
@@ -25,10 +27,11 @@
 		margin: 0 auto;
 		min-height: 100vh;
 		display: grid;
+		grid-template-rows: 1fr;
 		align-content: flex-start;
 	}
 	aside {
-		top: 20px;
+		top: 32px;
 		position: absolute;
 		left: 100%;
 		margin-left: 20px;

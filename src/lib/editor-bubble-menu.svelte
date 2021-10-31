@@ -25,7 +25,7 @@
 	}
 </script>
 
-<div bind:this={ref}>
+<div bind:this={ref} class:ready={!!editor}>
 	<button type="button" class:active={bold} on:click={() => editor.commands.toggleBold()}
 		><BoldIcon /></button
 	>
@@ -49,6 +49,8 @@
 
 <style lang="less">
 	div {
+		position: absolute;
+		visibility: hidden;
 		font-size: 0;
 		background-color: #1d1d1d;
 		border-radius: 6px;
@@ -56,6 +58,10 @@
 		display: grid;
 		gap: 4px;
 		grid-auto-flow: column;
+
+		&.ready {
+			position: relative;
+		}
 	}
 
 	button {

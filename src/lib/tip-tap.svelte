@@ -56,6 +56,7 @@
 	:global(.ProseMirror) {
 		display: grid;
 		gap: 12px;
+		align-content: flex-start;
 	}
 	:global(.is-editor-empty:first-child::before) {
 		content: attr(data-placeholder);
@@ -66,21 +67,12 @@
 	}
 
 	.wrapper {
-		// border: 1px solid #ccc;
 		display: grid;
 	}
 
-	.wrapper:focus-within {
-		// border: 1px solid red;
-	}
-
 	.element-wrapper {
-		height: auto;
+		display: grid;
 		width: 100%;
-		// padding: 1rem;
-		// flex: 1 1 0%;
-		// resize: both;
-		// overflow: auto;
 	}
 
 	.element-wrapper :global(p:first-of-type) {
