@@ -2,14 +2,7 @@ import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
 import { v4 as uuid } from '@lukeed/uuid';
 
-import { mockedDocument } from './_mocked-document';
-
-import type {
-	Document,
-	PostDocumentInput,
-	PostDocumentResponse,
-	PutDocumentResponse,
-} from './_typings';
+import type { Document, PostDocumentInput, PostDocumentResponse } from './_typings';
 
 export const post: RequestHandler<Locals, PostDocumentInput, Typify<PostDocumentResponse>> = async (
 	request
