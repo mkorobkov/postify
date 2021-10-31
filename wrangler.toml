@@ -20,6 +20,6 @@ command = 'npm run build'
 format = 'service-worker'
 
 [env.production]
-zone_id = "$yourZoneId"
+zone_id = "52cd261fce3e52e9691b51211d27c956"
 
 route = "postify.online/*"
