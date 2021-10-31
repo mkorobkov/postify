@@ -1,16 +1,15 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type {
-		Document,
-		GetDocumentResponse,
-		PutDocumentInput,
-		PutDocumentResponse,
-	} from './docs/_typings';
+	import type { Document, GetDocumentResponse } from './docs/_typings';
 
 	export const load: Load<{ pageParams: { documentId: string } }> = async (params) => {
 		const { page, fetch } = params;
 
 		const response = await fetch(`/docs/${page.params.documentId}`);
+
+		if (response.status === 404) {
+			return { status: 301, redirect: '/' };
+		}
 
 		// todo: add try/catch
 		const documentResponse = (await response.json()) as GetDocumentResponse;
@@ -37,6 +36,7 @@
 	import type { SvelteComponentTyped } from 'svelte';
 	import Layout from '$lib/layout.svelte';
 	import Button from '$lib/button.svelte';
+	import { updateDocument } from '../api/update-document';
 
 	export let loadedDocument: Document;
 	export let isOwner: boolean;
@@ -47,36 +47,18 @@
 		key = {}; // remount DocumentForm to reset its state
 	}
 
+	let loading = false;
 	let edit = false;
 	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
-	let loading = false;
-
-	async function updateDocument(data: FormDocument) {
-		const body: PutDocumentInput = {
-			...data,
-			isEncrypted: false,
-		};
-
-		const res = await fetch(`/docs/${loadedDocument.documentId}`, {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(body),
-		});
-
-		const result = (await res.json()) as PutDocumentResponse;
-
-		if (result.success === false) {
-			throw new Error(result?.message);
-		}
-
-		return result.data;
-	}
 
 	async function handleSubmit(event: CustomEvent<FormDocument>) {
 		loading = true;
 
 		try {
-			const result = await updateDocument(event.detail);
+			const result = await updateDocument(
+				{ ...event.detail, isEncrypted: false },
+				loadedDocument.documentId
+			);
 			loadedDocument = result.document;
 			isOwner = result.isOwner;
 			edit = false;
@@ -89,12 +71,12 @@
 </script>
 
 <Layout>
-	<div slot="aside" class="aside-content">
+	<div slot="aside">
 		{#if isOwner && !edit}
 			<Button on:click={() => (edit = true)}>Edit</Button>
 		{/if}
 
-		{#if documentFormRef}
+		{#if edit && documentFormRef}
 			<Button on:click={() => documentFormRef?.submitForm()}>Update</Button>
 		{/if}
 	</div>
@@ -113,10 +95,3 @@
 		<DocumentDetails document={loadedDocument} />
 	{/if}
 </Layout>
-
-<style>
-	.aside-content {
-		display: grid;
-		gap: 8px;
-	}
-</style>
