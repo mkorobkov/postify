@@ -9,7 +9,10 @@
 	let loading = false;
 
 	async function createDocument(data: { title: string }) {
-		const res = await fetch('/docs', { method: 'POST', body: JSON.stringify(data) });
+		const res = await fetch('/docs', {
+			method: 'POST',
+			body: JSON.stringify({ ...data, isEncrypted: false })
+		});
 		const result = (await res.json()) as any;
 
 		if (!result.success) {
