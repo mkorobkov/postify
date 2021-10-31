@@ -67,8 +67,6 @@
 
 		input {
 			width: 100%;
-			font-size: inherit;
-			border: none;
 
 			&::placeholder {
 				color: rgba(0, 0, 0, 0.25);
@@ -83,23 +81,22 @@
 		}
 
 		& > span {
+			display: none;
+			visibility: hidden;
 			user-select: none;
 			touch-action: none;
 			color: rgba(0, 0, 0, 0.25);
 			position: absolute;
-			top: 50%;
-			left: 0;
-			transform: translateY(-50%);
-			transition: opacity 0.3s;
-			visibility: hidden;
 			right: 100%;
 			margin-right: 20px;
-			left: auto;
+			top: 50%;
+			transform: translateY(-50%);
+
 			opacity: 0;
+			transition: opacity 0.3s;
 
 			border-right: 1px solid rgba(0, 0, 0, 0.25);
 			padding-right: 12px;
-			display: none;
 
 			@media (min-width: 900px) {
 				display: block;
