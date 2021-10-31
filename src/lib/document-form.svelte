@@ -99,6 +99,11 @@
 
 			border-right: 1px solid rgba(0, 0, 0, 0.25);
 			padding-right: 12px;
+			display: none;
+
+			@media (min-width: 900px) {
+				display: block;
+			}
 		}
 	}
 </style>

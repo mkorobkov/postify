@@ -49,7 +49,7 @@
 		gap: 8px;
 		padding-top: 32px;
 
-		@media (min-width: 1023px) {
+		@media (min-width: 1020px) {
 			top: 0;
 			position: fixed;
 			left: 50%;
