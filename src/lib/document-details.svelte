@@ -2,7 +2,7 @@
 	import { generateHTML } from '@tiptap/html';
 	import StarterKit from '@tiptap/starter-kit';
 
-	import type { Document } from 'src/routes/docs/_typings';
+	import type { Document } from '../routes/docs/_typings';
 
 	export let document: Partial<Document>;
 
@@ -10,8 +10,12 @@
 </script>
 
 <article>
-	<h1 class="document-title">{document.title ?? ''}</h1>
-	<p class="document-author">{document.author ?? ''}</p>
+	{#if document.title}
+		<h1 class="document-title">{document.title}</h1>
+	{/if}
+	{#if document.author}
+		<p class="document-author">{document.author ?? ''}</p>
+	{/if}
 	<div class="document-content">{@html html}</div>
 </article>
 
