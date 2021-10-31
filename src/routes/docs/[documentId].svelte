@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type { Document, GetDocumentResponse } from './documents/_typings';
+	import type { Document, GetDocumentResponse } from '../documents/_typings';
 
 	export const load: Load<{ pageParams: { documentId: string } }> = async (params) => {
 		const { page, fetch } = params;
@@ -36,7 +36,7 @@
 	import type { SvelteComponentTyped } from 'svelte';
 	import Layout from '$lib/layout.svelte';
 	import Button from '$lib/button.svelte';
-	import { updateDocument } from '../api/update-document';
+	import { updateDocument } from '../../api/update-document';
 
 	export let loadedDocument: Document;
 	export let isOwner: boolean;
