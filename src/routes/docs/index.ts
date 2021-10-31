@@ -1,6 +1,8 @@
-import type { Locals } from '$lib/types';
+import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
+import { mockedDocument } from './_mocked-document';
 
+import type { GetDocumentResponse } from './_typings';
 // create document: POST /docs
 export const post: RequestHandler<Locals> = async (request) => {
 	console.log('[docs post request]', request);
@@ -19,4 +21,30 @@ export const post: RequestHandler<Locals> = async (request) => {
 			body: { success: false, message: err?.message ?? 'Error occurred' }
 		};
 	}
+};
+
+// replace document PUT /docs/docId
+export const put: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> = async (
+	request
+) => {
+	const { documentId } = request.params;
+	// console.log('[docs put request', request);
+
+	return {
+		status: 200,
+		body: {
+			success: true,
+			data: {
+				document: {
+					author: 'name here',
+					content: mockedDocument,
+					title: 'First document',
+					authorId: 'qwerty',
+					documentId,
+					isEncrypted: false
+				},
+				isOwner: documentId === 'existing-author'
+			}
+		}
+	};
 };
