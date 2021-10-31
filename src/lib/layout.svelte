@@ -19,7 +19,7 @@
 		<p>Inspired by <a href="https://telegra.ph/" target="_blank">Telegra.ph</a></p>
 		<p>
 			Made with <a href="https://kit.svelte.dev/" target="_blank">Svelte kit (SSR)</a> and
-			<a href="https://tiptap.dev/" target="_blank">Tip tap</a>
+			<a href="https://tiptap.dev/" target="_blank">tiptap</a>
 		</p>
 		<p>
 			Delivered and hosted by <a href="https://workers.dev" target="_blank">Cloudflare workers</a>
