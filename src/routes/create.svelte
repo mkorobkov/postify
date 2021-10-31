@@ -1,37 +1,35 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import DocumentForm from '$lib/document-form.svelte';
+	import DocumentForm, { FormDocument } from '$lib/document-form.svelte';
 	import type { SvelteComponentTyped } from 'svelte';
 	import Layout from '$lib/layout.svelte';
 	import Button from '$lib/button.svelte';
+	import type { PostDocumentResponse } from './docs/_typings';
 
 	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
 	let loading = false;
 
-	async function createDocument(data: { title: string }) {
+	async function createDocument(data: FormDocument) {
 		const res = await fetch('/docs', {
 			method: 'POST',
 			body: JSON.stringify({ ...data, isEncrypted: false })
 		});
-		const result = (await res.json()) as any;
 
-		if (!result.success) {
+		const result = (await res.json()) as PostDocumentResponse;
+
+		if (result.success === false) {
 			throw new Error(result?.message);
 		}
 
-		return result.data as string;
+		return result.data;
 	}
 
-	async function handleSubmit(
-		event: CustomEvent<{
-			title: string;
-		}>
-	) {
+	async function handleSubmit(event: CustomEvent<FormDocument>) {
 		loading = true;
 
 		try {
-			const docId = await createDocument(event.detail);
-			goto(`/${docId}`);
+			const result = await createDocument(event.detail);
+			goto(`/${result.document.documentId}`);
 		} catch (err) {
 			alert(err?.message ?? 'Error occurred');
 		} finally {

@@ -1,7 +1,11 @@
+<script context="module" lang="ts">
+	export type FormDocument = Pick<Document, 'author' | 'content' | 'title'>;
+</script>
+
 <script lang="ts">
 	import type { Editor } from '@tiptap/core';
 
-	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
+	import type { Document, TipTapJSONContent } from 'src/routes/docs/_typings';
 	import { createEventDispatcher } from 'svelte';
 	import TipTap from './tip-tap.svelte';
 
@@ -16,7 +20,7 @@
 	let editor: Editor | undefined; // to focus from outside
 
 	const dispatch = createEventDispatcher<{
-		submit: { title: string; author: string; content: TipTapJSONContent };
+		submit: FormDocument;
 	}>();
 
 	export const submitForm = () => {
