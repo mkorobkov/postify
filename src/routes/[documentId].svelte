@@ -96,10 +96,6 @@
 			<Button href="/create">Create new</Button>
 		{/if}
 
-		{#if edit}
-			<Button on:click={() => (edit = !edit)}>Save post</Button>
-		{/if}
-
 		{#if documentFormRef}
 			<Button on:click={() => documentFormRef?.submitForm()}>Submit from parent</Button>
 		{/if}
