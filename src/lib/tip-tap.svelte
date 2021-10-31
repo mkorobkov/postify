@@ -61,7 +61,7 @@
 	:global(.is-editor-empty:first-child::before) {
 		content: attr(data-placeholder);
 		float: left;
-		color: #adb5bd;
+		color: rgba(0, 0, 0, 0.25);
 		pointer-events: none;
 		height: 0;
 	}
