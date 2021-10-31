@@ -41,11 +41,11 @@
 	{/if}
 	<label class:has-value={formTitle.length > 0} class="document-title">
 		<!-- svelte-ignore a11y-autofocus -->
-		<input bind:value={formTitle} autofocus={autoFocus === 'title'} />
+		<input bind:value={formTitle} autofocus={autoFocus === 'title'} placeholder="Title" />
 		<span>Title</span>
 	</label>
 	<label class:has-value={formAuthor.length > 0} class="document-author">
-		<input bind:value={formAuthor} />
+		<input bind:value={formAuthor} placeholder="Author" />
 		<span>Author</span>
 	</label>
 	<div class="document-content">
@@ -69,14 +69,10 @@
 			width: 100%;
 			font-size: inherit;
 			border: none;
-		}
 
-		&.has-value > span {
-			visibility: hidden;
-			right: 100%;
-			margin-right: 12px;
-			left: auto;
-			opacity: 0;
+			&::placeholder {
+				color: rgba(0, 0, 0, 0.25);
+			}
 		}
 
 		&.has-value {
@@ -89,12 +85,20 @@
 		& > span {
 			user-select: none;
 			touch-action: none;
-			color: rgba(0, 0, 0, 0.4);
+			color: rgba(0, 0, 0, 0.25);
 			position: absolute;
 			top: 50%;
 			left: 0;
 			transform: translateY(-50%);
 			transition: opacity 0.3s;
+			visibility: hidden;
+			right: 100%;
+			margin-right: 20px;
+			left: auto;
+			opacity: 0;
+
+			border-right: 1px solid rgba(0, 0, 0, 0.25);
+			padding-right: 12px;
 		}
 	}
 </style>
