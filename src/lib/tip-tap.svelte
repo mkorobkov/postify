@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
+	import type { TipTapJSONContent } from 'src/routes/documents/_typings';
 	import { Editor } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
 	import BubbleMenu from '@tiptap/extension-bubble-menu';

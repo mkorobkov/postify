@@ -1,11 +1,11 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type { Document, GetDocumentResponse } from './docs/_typings';
+	import type { Document, GetDocumentResponse } from './documents/_typings';
 
 	export const load: Load<{ pageParams: { documentId: string } }> = async (params) => {
 		const { page, fetch } = params;
 
-		const response = await fetch(`/docs/${page.params.documentId}`);
+		const response = await fetch(`/documents/${page.params.documentId}`);
 
 		if (response.status === 404) {
 			return { status: 301, redirect: '/' };

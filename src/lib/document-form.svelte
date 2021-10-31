@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import type { Document } from 'src/routes/docs/_typings';
+	import type { Document } from 'src/routes/documents/_typings';
 	import { createEventDispatcher } from 'svelte';
 	import Loading from './loading.svelte';
 	import TipTap from './tip-tap.svelte';

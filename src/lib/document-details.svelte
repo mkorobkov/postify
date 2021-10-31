@@ -2,7 +2,7 @@
 	import { generateHTML } from '@tiptap/html';
 	import StarterKit from '@tiptap/starter-kit';
 
-	import type { Document } from '../routes/docs/_typings';
+	import type { Document } from '../routes/documents/_typings';
 
 	export let document: Partial<Document>;
 
