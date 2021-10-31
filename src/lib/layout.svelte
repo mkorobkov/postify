@@ -32,10 +32,10 @@
 	}
 	aside {
 		top: 32px;
-		position: absolute;
-		left: 100%;
+		position: fixed;
+		left: 50%;
 		width: 120px;
-		margin-left: 20px;
+		margin-left: 370px;
 		display: grid;
 		gap: 8px;
 	}
