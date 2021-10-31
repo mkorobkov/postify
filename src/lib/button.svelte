@@ -37,6 +37,7 @@
 
 		&.disabled,
 		&:disabled {
+			touch-action: none;
 			cursor: default;
 			opacity: 0.6;
 		}
