@@ -48,7 +48,7 @@
 		>
 	</div>
 	<div class="container">
-		<DocumentForm bind:this={documentFormRef} on:submit={handleSubmit} />
+		<DocumentForm bind:this={documentFormRef} on:submit={handleSubmit} {loading} />
 	</div>
 </Layout>
 

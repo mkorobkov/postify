@@ -9,6 +9,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import TipTap from './tip-tap.svelte';
 
+	export let loading = false;
 	export let autoFocus: 'title' | 'content' = 'title';
 	export let title: string = '';
 	export let author: string = '';
@@ -31,12 +32,13 @@
 		dispatch('submit', {
 			author: formAuthor,
 			content: formContent,
-			title: formTitle
+			title: formTitle,
 		});
 	};
 </script>
 
 <form on:submit|preventDefault={submitForm}>
+	<div class:show={loading} class:loading={true} />
 	<label class:has-value={formTitle.length > 0} class="document-title">
 		<!-- svelte-ignore a11y-autofocus -->
 		<input bind:value={formTitle} autofocus={autoFocus === 'title'} />
@@ -57,7 +59,23 @@
 </form>
 
 <style lang="less">
+	.loading {
+		display: none;
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(255, 255, 255, 0.6);
+		cursor: progress;
+		z-index: 1;
+
+		&.show {
+			display: block;
+		}
+	}
 	form {
+		position: relative;
 		display: grid;
 		grid-template-rows: auto auto 1fr;
 		padding-top: 32px;
