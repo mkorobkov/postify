@@ -1,4 +1,4 @@
-import { dev, prerendering } from '$app/env';
+import { prerendering } from '$app/env';
 import { parse } from 'cookie';
 
 import { v4 as uuid } from '@lukeed/uuid';
@@ -11,7 +11,7 @@ import type { User } from './routes/users/_typings';
 const AUTH_COOKIE_NAME = 'token';
 
 export const handle: Handle<Locals> = async ({ request, resolve }) => {
-	if (dev || prerendering) return resolve(request);
+	if (prerendering) return resolve(request);
 	const jwt = (await import('@tsndr/cloudflare-worker-jwt')).default;
 	const cookie = parse(request.headers['cookie'] || '');
 	const signedToken = cookie[AUTH_COOKIE_NAME];
