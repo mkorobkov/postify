@@ -1,8 +1,14 @@
 # Wrangler preparations
 
+## for development on https://\*.\*.workers.dev/
 ```
 wrangler secret put JWT_SECRET
 wrangler secret put FAUNA_KEY
+```
+## for production
+```
+wrangler secret put JWT_SECRET --env production
+wrangler secret put FAUNA_KEY --env production
 ```
 
 # fauna
