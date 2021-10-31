@@ -8,68 +8,68 @@ export const mockedDocument: TipTapJSONContent = {
 			content: [
 				{
 					type: 'text',
-					text: 'My '
+					text: 'My ',
 				},
 				{
 					type: 'text',
 					marks: [
 						{
-							type: 'bold'
-						}
+							type: 'bold',
+						},
 					],
-					text: 'first'
+					text: 'first',
 				},
 				{
 					type: 'text',
-					text: ' title'
-				}
-			]
+					text: ' title',
+				},
+			],
 		},
 		{
 			type: 'paragraph',
 			content: [
 				{
 					type: 'text',
-					text: 'And '
+					text: 'And ',
 				},
 				{
 					type: 'text',
 					marks: [
 						{
-							type: 'bold'
-						}
+							type: 'bold',
+						},
 					],
-					text: 'the '
+					text: 'the ',
 				},
 				{
 					type: 'text',
 					marks: [
 						{
-							type: 'bold'
+							type: 'bold',
 						},
 						{
-							type: 'italic'
-						}
+							type: 'italic',
+						},
 					],
-					text: 'next'
+					text: 'next',
 				},
 				{
 					type: 'text',
-					text: ' paragraph'
-				}
-			]
+					text: ' paragraph',
+				},
+			],
 		},
 		{
 			type: 'paragraph',
 			content: [
 				{
 					type: 'text',
-					text: 'My first title'
-				}
-			]
+					text: 'My first title',
+				},
+			],
 		},
 		{
-			type: 'paragraph'
-		}
-	]
+			type: 'paragraph',
+		},
+	],
 };

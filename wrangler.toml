@@ -9,11 +9,11 @@ site = {bucket = "./build",entry-point = "./workers-site"}
 
 account_id = '42ba4aca6abe337275b912d53b81721d'
 
+kv_namespaces = [
+    { binding = "DOCUMENTS_KV", id = "38ecb55eda1b46bcb02e9719c27cf0cd" }
+]
+
 [build]
 command = 'npm run build'
 [build.upload]
 format = 'service-worker'
-
-kv_namespaces = [
-    { binding = "DOCUMENT_KV", id = "c9524253bd5542ad9cb4fdbe213dca99" }
-]

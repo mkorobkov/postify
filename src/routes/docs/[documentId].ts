@@ -27,10 +27,10 @@ export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> =
 					title: 'First document',
 					authorId: 'qwerty',
 					documentId,
-					isEncrypted: false
+					isEncrypted: false,
 				},
-				isOwner: documentId === 'existing-author'
-			}
-		}
+				isOwner: documentId === 'existing-author',
+			},
+		},
 	};
 };
