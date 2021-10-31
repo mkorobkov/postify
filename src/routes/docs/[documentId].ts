@@ -8,7 +8,12 @@ import type {
 	PutDocumentInput,
 	PutDocumentResponse,
 } from './_typings';
-import { documentResponse, getDocumentByRequest, notFoundResponse } from './_utils';
+import {
+	documentResponse,
+	getDocumentByRequest,
+	notFoundResponse,
+	updateDocumentAndReturn,
+} from './_utils';
 
 export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> = async (
 	request
@@ -48,20 +53,54 @@ export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> =
 	return notFoundResponse();
 };
 
-// replace document PUT /docs/docId
-export const put: RequestHandler<Locals, unknown, Typify<PutDocumentResponse>> = async (
+export const put: RequestHandler<Locals, PutDocumentInput, Typify<PutDocumentResponse>> = async (
 	request
 ) => {
-	const {
-		params: { documentId },
-		body,
-	} = request;
-	console.log('[docs put request', request, 'documentId', documentId);
+	if (dev) return devPutResponse(request);
 
-	await new Promise((resolve) => setTimeout(resolve, 2000));
+	const document = await getDocumentByRequest(request);
 
-	const newDocument = body as any as Document;
+	if (!document) return notFoundResponse();
+	if (document.authorId !== request.locals.user.id) {
+		return {
+			status: 401,
+			body: {
+				success: false,
+				message: 'You must be the author of the document',
+			},
+		};
+	}
 
+	try {
+		const { isEncrypted, title, author, content } = request.body;
+		const updatedDocument = await updateDocumentAndReturn({
+			...document,
+			isEncrypted,
+			title,
+			author,
+			content,
+		});
+
+		return documentResponse(updatedDocument, true);
+	} catch (err) {
+		let badRequestError = true;
+		if (!err.message || (err.message && !err.message.includes('param. Should be'))) {
+			badRequestError = false;
+		}
+
+		if (!badRequestError) {
+			console.error(JSON.stringify(request));
+			console.error(err);
+		}
+
+		return {
+			status: badRequestError ? 400 : 500,
+			body: { success: false, message: badRequestError ? err.message : 'Internal Server Error' },
+		};
+	}
+};
+
+function devPutResponse(request): any {
 	return {
 		status: 200,
 		body: {
@@ -73,11 +112,11 @@ export const put: RequestHandler<Locals, unknown, Typify<PutDocumentResponse>> =
 					title: 'First document',
 					authorId: 'qwerty',
 					isEncrypted: false,
-					...newDocument,
-					documentId,
+					...(request.body as any as Document),
+					documentId: request.params.documentId,
 				},
 				isOwner: true, // because we editing it
 			},
 		},
 	};
-};
+}
