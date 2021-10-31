@@ -1,9 +1,11 @@
+import { User } from '../routes/users/_typings';
+
 /**
  * Can be made globally available by placing this
  * inside `global.d.ts` and removing `export` keyword
  */
 export interface Locals {
-	userid?: string;
+	user: User;
 }
 
 // https://github.com/sveltejs/kit/issues/1997

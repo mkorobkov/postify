@@ -2,7 +2,7 @@
   "name": "postify",
   "version": "0.0.1",
   "scripts": {
-    "dev": "miniflare workers-site/index.js",
+    "dev": "miniflare workers-site/index.js --watch",
     "dev:svelte": "svelte-kit dev",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
@@ -10,7 +10,7 @@
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
-    "deploy": "yarn build && yarn wrangler publish"
+    "deploy": "npm run build && npx wrangler publish"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^3.0.0",
@@ -37,11 +37,14 @@
   },
   "type": "module",
   "dependencies": {
+    "@lukeed/uuid": "^2.0.0",
     "@tiptap/core": "^2.0.0-beta.129",
     "@tiptap/extension-bubble-menu": "^2.0.0-beta.43",
     "@tiptap/extension-placeholder": "^2.0.0-beta.37",
     "@tiptap/html": "^2.0.0-beta.128",
-    "@tiptap/starter-kit": "^2.0.0-beta.131"
+    "@tiptap/starter-kit": "^2.0.0-beta.131",
+    "@tsndr/cloudflare-worker-jwt": "^1.1.4",
+    "cookie": "^0.4.1"
   },
   "lint-staged": {
     "*.ts": [
