@@ -65,29 +65,3 @@ export const post: RequestHandler<Locals, PostDocumentInput, Typify<PostDocument
 		};
 	}
 };
-
-// replace document PUT /docs/docId
-export const put: RequestHandler<Locals, unknown, Typify<PutDocumentResponse>> = async (
-	request
-) => {
-	const { documentId } = request.params;
-	// console.log('[docs put request', request);
-
-	return {
-		status: 200,
-		body: {
-			success: true,
-			data: {
-				document: {
-					author: 'name here',
-					content: mockedDocument,
-					title: 'First document',
-					authorId: 'qwerty',
-					documentId,
-					isEncrypted: false,
-				},
-				isOwner: documentId === 'existing-author',
-			},
-		},
-	};
-};

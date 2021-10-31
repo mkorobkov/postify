@@ -38,7 +38,7 @@ interface GetDocumentSuccessResponse {
 
 export type GetDocumentResponse = ErrorResponse | GetDocumentSuccessResponse;
 
-export type PutDocumentInput = Omit<Document, 'authorId'>;
+export type PutDocumentInput = Omit<Document, 'documentId' | 'authorId'>;
 
 interface PutDocumentSuccessResponse {
 	success: true;
