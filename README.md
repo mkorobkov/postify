@@ -2,11 +2,15 @@
 
 ## for development on https://\*.\*.workers.dev/
 ```
+# run and update wrangler.toml file
+wrangler kv:namespace create DOCUMENTS_KV
 wrangler secret put JWT_SECRET
 wrangler secret put FAUNA_KEY
 ```
 ## for production
 ```
+# run and update wrangler.toml file
+wrangler kv:namespace create DOCUMENTS_KV --env production
 wrangler secret put JWT_SECRET --env production
 wrangler secret put FAUNA_KEY --env production
 ```
