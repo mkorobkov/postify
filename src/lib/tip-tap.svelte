@@ -5,6 +5,7 @@
 	import BubbleMenu from '@tiptap/extension-bubble-menu';
 	import Placeholder from '@tiptap/extension-placeholder';
 	import { onDestroy, onMount } from 'svelte';
+	import EditorBubbleMenu from './editor-bubble-menu.svelte';
 
 	export let content: TipTapJSONContent;
 	export let autoFocus = false;
@@ -12,6 +13,8 @@
 	let element;
 	let bubbleMenuElement;
 	let editor: Editor | undefined;
+
+	let bubbleRerender = {};
 
 	$: async () => {
 		if (editor) {
@@ -28,12 +31,14 @@
 			extensions: [
 				StarterKit,
 				Placeholder.configure({ placeholder: 'Write something...' }),
-				BubbleMenu.configure({ element: bubbleMenuElement }),
+				BubbleMenu.configure({ element: bubbleMenuElement, tippyOptions: { delay: 3000 } }),
 			],
 			content,
 			onUpdate: async ({ editor }) => {
 				content = editor.getJSON() as TipTapJSONContent;
+				bubbleRerender = {}; // after editor state change we should update bubble menu state
 			},
+			// onTransaction: () => {},
 		});
 	});
 
@@ -44,11 +49,7 @@
 
 <div class="wrapper">
 	<div class="element-wrapper" bind:this={element} />
-	<div bind:this={bubbleMenuElement} class="bubble">
-		<button>test</button>
-		<button>test</button>
-		<button>test</button>
-	</div>
+	<EditorBubbleMenu bind:ref={bubbleMenuElement} {editor} rerender={bubbleRerender} />
 </div>
 
 <style lang="less">
