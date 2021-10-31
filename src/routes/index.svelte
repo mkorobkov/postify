@@ -24,6 +24,8 @@
 	}
 </script>
 
+<svelte:head><title>Create document — Postify</title></svelte:head>
+
 <Layout>
 	<div slot="aside">
 		<Button on:click={documentFormRef.submitForm} disabled={loading}>Publish</Button>

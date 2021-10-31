@@ -70,6 +70,8 @@
 	}
 </script>
 
+<svelte:head><title>{loadedDocument.title ?? 'Document'} — Postify</title></svelte:head>
+
 <Layout>
 	<div slot="aside">
 		{#if isOwner && !edit}
