@@ -38,6 +38,8 @@ interface GetDocumentSuccessResponse {
 
 export type GetDocumentResponse = ErrorResponse | GetDocumentSuccessResponse;
 
+export type PutDocumentInput = Omit<Document, 'authorId'>;
+
 interface PutDocumentSuccessResponse {
 	success: true;
 	data: DocumentInfo;

@@ -1,6 +1,11 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type { GetDocumentData, GetDocumentResponse, TipTapJSONContent } from './docs/_typings';
+	import type {
+		Document,
+		GetDocumentResponse,
+		PutDocumentInput,
+		PutDocumentResponse,
+	} from './docs/_typings';
 
 	export const load: Load<{ pageParams: { documentId: string } }> = async (params) => {
 		const { page, fetch, session, stuff } = params;
@@ -16,13 +21,13 @@
 			return {
 				props: {
 					doc: documentResponse.data.document,
-					isOwner: documentResponse.data.isOwner
-				}
+					isOwner: documentResponse.data.isOwner,
+				},
 			};
 		} else {
 			return {
 				status: response.status,
-				error: new Error(`${documentResponse.message}`)
+				error: new Error(`${documentResponse.message}`),
 			};
 		}
 	};
@@ -30,23 +35,53 @@
 
 <script lang="ts">
 	import DocumentDetails from '$lib/document-details.svelte';
-	import DocumentForm from '$lib/document-form.svelte';
+	import DocumentForm, { FormDocument } from '$lib/document-form.svelte';
 	import type { SvelteComponentTyped } from 'svelte';
 	import Layout from '$lib/layout.svelte';
 	import Button from '$lib/button.svelte';
 
-	export let doc: GetDocumentData['document'];
+	export let doc: Document;
 	export let isOwner: boolean;
 
 	let edit = false;
 	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
+	let loading = false;
 
-	function handleSubmit(
-		event: CustomEvent<{
-			title: string;
-		}>
-	) {
-		console.log('event', event, event.detail);
+	async function updateDocument(data: FormDocument) {
+		const body: PutDocumentInput = {
+			...data,
+			isEncrypted: false,
+			documentId: 'doc-id',
+		};
+
+		const res = await fetch('/docs', {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(body),
+		});
+
+		const result = (await res.json()) as PutDocumentResponse;
+
+		if (result.success === false) {
+			throw new Error(result?.message);
+		}
+
+		return result.data;
+	}
+
+	async function handleSubmit(event: CustomEvent<FormDocument>) {
+		loading = true;
+
+		try {
+			const result = await updateDocument(event.detail);
+			doc = result.document;
+			isOwner = result.isOwner;
+			edit = false;
+		} catch (err) {
+			alert(err?.message ?? 'Error occurred');
+		} finally {
+			loading = false;
+		}
 	}
 </script>
 
@@ -72,6 +107,7 @@
 
 	{#if edit}
 		<DocumentForm
+			{loading}
 			{...doc}
 			bind:this={documentFormRef}
 			on:submit={handleSubmit}
