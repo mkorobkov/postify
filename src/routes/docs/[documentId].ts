@@ -12,6 +12,7 @@ import type {
 import {
 	documentResponse,
 	getDocumentByRequest,
+	isBadRequestError,
 	notFoundResponse,
 	updateDocumentAndReturn,
 } from './_utils';
@@ -84,16 +85,12 @@ export const put: RequestHandler<Locals, PutDocumentInput, Typify<PutDocumentRes
 
 		return documentResponse(updatedDocument, true);
 	} catch (err) {
-		let badRequestError = true;
-		if (!err.message || (err.message && !err.message.includes('param. Should be'))) {
-			badRequestError = false;
-		}
-
+		const badRequestError = isBadRequestError(err.message);
 		if (!badRequestError) {
 			console.error(JSON.stringify(request));
 			console.error(err);
 
-			if(err.requestResult) {
+			if (err.requestResult) {
 				console.error('fauna error');
 				console.error(getFaunaError(err));
 			}

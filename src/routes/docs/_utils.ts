@@ -8,6 +8,22 @@ import type { Document, PostDocumentInput, PutDocumentInput } from './_typings';
 
 const { Create, Collection, Ref, Get, Replace } = faunadb.query;
 
+export function isBadRequestError(message?: string): boolean {
+	let badRequestError = true;
+
+	if (
+		!message ||
+		(message &&
+			!message.includes('in JSON at position') &&
+			!message.includes('param. Should be') &&
+			!message.includes('Content is required'))
+	) {
+		badRequestError = false;
+	}
+
+	return badRequestError;
+}
+
 async function getDocumentFromStorage(documentId): Promise<Document> {
 	const faunaClient = new faunadb.Client({
 		secret: FAUNA_KEY,
