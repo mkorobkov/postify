@@ -2,7 +2,8 @@ import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
 import { mockedDocument } from './_mocked-document';
 
-import type { GetDocumentResponse } from './_typings';
+import type { PutDocumentResponse } from './_typings';
+
 // create document: POST /docs
 export const post: RequestHandler<Locals> = async (request) => {
 	console.log('[docs post request]', request);
@@ -24,7 +25,7 @@ export const post: RequestHandler<Locals> = async (request) => {
 };
 
 // replace document PUT /docs/docId
-export const put: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> = async (
+export const put: RequestHandler<Locals, unknown, Typify<PutDocumentResponse>> = async (
 	request
 ) => {
 	const { documentId } = request.params;
