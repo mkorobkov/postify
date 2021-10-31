@@ -4,36 +4,17 @@
 	import type { SvelteComponentTyped } from 'svelte';
 	import Layout from '$lib/layout.svelte';
 	import Button from '$lib/button.svelte';
-	import type { PostDocumentInput, PostDocumentResponse } from './docs/_typings';
+	import { createDocument } from '../api/create-document';
 
+	// to submit form from parent
 	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
 	let loading = false;
-
-	async function createDocument(data: FormDocument) {
-		const body: PostDocumentInput = {
-			...data,
-			isEncrypted: false,
-		};
-
-		const res = await fetch('/docs', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(body),
-		});
-		const result = await res.json<PostDocumentResponse>();
-
-		if (result.success === false) {
-			throw new Error(result?.message);
-		}
-
-		return result.data;
-	}
 
 	async function handleSubmit(event: CustomEvent<FormDocument>) {
 		loading = true;
 
 		try {
-			const result = await createDocument(event.detail);
+			const result = await createDocument({ ...event.detail, isEncrypted: false });
 			goto(`/${result.document.documentId}`);
 		} catch (err) {
 			alert(err?.message ?? 'Error occurred');
