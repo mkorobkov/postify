@@ -1,11 +1,13 @@
 .document-title {
 	color: rgba(0, 0, 0, 0.9);
 	font-size: 32px;
+	font-weight: normal;
 	margin-bottom: 8px;
 }
 .document-author {
 	color: rgba(0, 0, 0, 0.7);
 	font-size: 18px;
+	font-weight: normal;
 	margin-bottom: 22px;
 }
 .document-content {
@@ -13,8 +15,20 @@
 	display: grid;
 	gap: 12px;
 	font-size: 20px;
+
+	/* css from tip-tap editor*/
+	word-wrap: break-word;
+	white-space: pre-wrap;
+	white-space: break-spaces;
+	-webkit-font-variant-ligatures: none;
+	font-variant-ligatures: none;
+	font-feature-settings: 'liga' 0;
 }
 .document-content blockquote {
 	padding-left: 20px;
 	border-left: 2px solid rgba(0, 0, 0, 0.4);
+}
+.document-content h1 {
+	/* override default chrome css for h1 in article/secrion */
+	font-size: 2em;
 }

@@ -19,7 +19,4 @@
 	article {
 		padding: 32px 0 0;
 	}
-	h1 {
-		font-weight: normal;
-	}
 </style>

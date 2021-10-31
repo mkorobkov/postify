@@ -15,22 +15,32 @@
 		<slot />
 	</main>
 	<aside><slot name="aside" /></aside>
+	<footer>
+		<p>Inspired by <a href="https://telegra.ph/" target="_blank">Telegra.ph</a></p>
+		<p>
+			Made with <a href="https://kit.svelte.dev/" target="_blank">Svelte kit (SSR)</a> and
+			<a href="https://tiptap.dev/" target="_blank">Tip tap</a>
+		</p>
+		<p>
+			Delivered and hosted by <a href="https://workers.dev" target="_blank">Cloudflare workers</a>
+		</p>
+	</footer>
 </div>
 
-<style>
+<style lang="less">
 	main {
 		display: grid;
 		align-content: flex-start;
 		grid-template-rows: 1fr;
+		flex: 1;
 	}
 	.wrapper {
 		position: relative;
 		width: 700px;
 		margin: 0 auto;
 		min-height: 100vh;
-		display: grid;
-		grid-template-rows: 1fr;
-		align-content: flex-start;
+		display: flex;
+		flex-direction: column;
 	}
 	aside {
 		top: 32px;
@@ -40,5 +50,21 @@
 		margin-left: 370px;
 		display: grid;
 		gap: 8px;
+	}
+
+	footer {
+		color: rgba(0, 0, 0, 0.3);
+		text-align: center;
+		padding: 32px;
+		display: grid;
+		gap: 4px;
+
+		a {
+			transition: 0.1s;
+
+			&:hover {
+				color: rgba(0, 0, 0, 0.7);
+			}
+		}
 	}
 </style>

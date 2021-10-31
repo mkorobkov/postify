@@ -47,16 +47,5 @@
 	<div slot="aside">
 		<Button on:click={documentFormRef.submitForm} disabled={loading}>Publish</Button>
 	</div>
-	<div class="container">
-		<DocumentForm bind:this={documentFormRef} on:submit={handleSubmit} {loading} />
-	</div>
+	<DocumentForm bind:this={documentFormRef} on:submit={handleSubmit} {loading} />
 </Layout>
-
-<style lang="less">
-	.container {
-		position: relative;
-		height: 100%;
-		min-height: 100vh;
-		display: grid;
-	}
-</style>
