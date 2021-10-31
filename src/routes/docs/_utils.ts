@@ -62,6 +62,7 @@ export function validateDocumentInputOrThrow(
 	if (typeof isEncrypted !== 'boolean')
 		throw new Error('Bad isEncrypted param. Should be boolean.');
 	if (typeof title !== 'string') throw new Error('Bad title param. Should be string.');
+	if (!content) throw new Error('Content is required.');
 	if (typeof content !== 'object') throw new Error('Bad content param. Should be object.');
 }
 
