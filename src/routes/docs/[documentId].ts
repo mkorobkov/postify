@@ -1,36 +1,71 @@
-import { v4 as uuid } from '@lukeed/uuid';
-
-import { mockedDocument } from './_mocked-document';
-
+import { dev } from '$app/env';
 import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
 import type { Document, GetDocumentResponse, PutDocumentResponse } from './_typings';
+import { mockedDocument } from './_mocked-document';
 
-// get document: GET /docs/document-id
 export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> = async (
 	request
 ) => {
 	const { documentId } = request.params;
 
-	if (documentId !== 'existing' && documentId !== 'existing-author') {
-		return { status: 404, body: { success: false, message: 'err' } };
+	let document: Document;
+
+	/* try to get document from cache */
+	try {
+		const cached = await DOCUMENTS_KV.get(documentId, { type: 'json' });
+		if (cached !== null) {
+			document = cached as Document;
+		}
+	} catch {
+		/* ignore error on JSON.parse */
+	}
+
+	// if document is not found on cache
+	// or user requesting the document is the author(we should take document from storage instead of cache)
+	if (!document || document.authorId === request.locals.user.id) {
+		// todo try to get from data storage
+		// document =
+	}
+
+	if (dev) {
+		if (documentId !== 'existing' && documentId !== 'existing-author') {
+			return { status: 404, body: { success: false, message: 'err' } };
+		}
+		return {
+			status: 200,
+			body: {
+				success: true,
+				data: {
+					document: {
+						author: 'name here',
+						content: mockedDocument,
+						title: 'First document',
+						authorId: 'qwerty',
+						documentId,
+						isEncrypted: false,
+					},
+					isOwner: documentId === 'existing-author',
+				},
+			},
+		};
+	}
+
+	if (document) {
+		return {
+			status: 200,
+			body: {
+				success: true,
+				data: { document, isOwner: document.authorId === request.locals.user.id },
+			},
+		};
 	}
 
 	return {
-		status: 200,
+		status: 404,
 		body: {
-			success: true,
-			data: {
-				document: {
-					author: 'name here',
-					content: mockedDocument,
-					title: 'First document',
-					authorId: 'qwerty',
-					documentId,
-					isEncrypted: false,
-				},
-				isOwner: documentId === 'existing-author',
-			},
+			success: false,
+			message: 'Document is not found',
 		},
 	};
 };
