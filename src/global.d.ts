@@ -4,6 +4,6 @@ declare const FAUNA_KEY: string;
 declare const DOCUMENTS_KV: KVNamespace;
 
 declare module '*.svg?component' {
-	const content: string;
-	export default content;
+  const content: string;
+  export default content;
 }

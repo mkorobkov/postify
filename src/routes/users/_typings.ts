@@ -1,9 +1,9 @@
 export interface User {
-	id: string;
-	name: string;
+  id: string;
+  name: string;
 }
 
 export interface GetUsersMeResponse {
-	success: true;
-	user: User;
+  success: true;
+  user: User;
 }

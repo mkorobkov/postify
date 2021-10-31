@@ -5,7 +5,7 @@ import { User } from '../routes/users/_typings';
  * inside `global.d.ts` and removing `export` keyword
  */
 export interface Locals {
-	user: User;
+  user: User;
 }
 
 // https://github.com/sveltejs/kit/issues/1997
