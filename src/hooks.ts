@@ -27,7 +27,7 @@ export const handle: Handle<Locals> = async ({ request, resolve }) => {
 	/* generate new user and assign to current request */
 	const newUser: User = {
 		id: uuid(),
-		name: ''
+		name: '',
 	};
 
 	request.locals.user = newUser;
