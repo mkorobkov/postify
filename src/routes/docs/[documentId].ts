@@ -1,6 +1,7 @@
 import { dev } from '$app/env';
 import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
+import { getFaunaError } from './_fauna-utils';
 import { mockedDocument } from './_mocked-document';
 import type {
 	Document,
@@ -91,6 +92,11 @@ export const put: RequestHandler<Locals, PutDocumentInput, Typify<PutDocumentRes
 		if (!badRequestError) {
 			console.error(JSON.stringify(request));
 			console.error(err);
+
+			if(err.requestResult) {
+				console.error('fauna error');
+				console.error(getFaunaError(err));
+			}
 		}
 
 		return {
