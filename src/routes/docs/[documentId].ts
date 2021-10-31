@@ -1,3 +1,4 @@
+import { v4 as uuid } from '@lukeed/uuid';
 import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
 import { mockedDocument } from './_mocked-document';
@@ -19,7 +20,14 @@ export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> =
 		body: {
 			success: true,
 			data: {
-				document: { author: 'name here', content: mockedDocument, title: 'First document' },
+				document: {
+					documentId: uuid(),
+					authorId: uuid(),
+					isEncrypted: false,
+					author: 'name here',
+					content: mockedDocument,
+					title: 'First document',
+				},
 				isOwner: documentId === 'existing-author'
 			}
 		}
