@@ -35,7 +35,7 @@ export const handle: Handle<Locals> = async ({ request, resolve }) => {
 	const response = await resolve(request);
 
 	/* add auth token for future requests */
-	response.headers['Set-Cookie'] = `token=${await generateAuthToken(newUser)};HttpOnly`;
+	response.headers['Set-Cookie'] = `token=${await generateAuthToken(newUser)};HttpOnly;Path=/;`;
 
 	return response;
 };

@@ -2,33 +2,27 @@ import { dev } from '$app/env';
 import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
 import { mockedDocument } from './_mocked-document';
-import type { Document, GetDocumentResponse, PutDocumentResponse } from './_typings';
+import type {
+	Document,
+	GetDocumentResponse,
+	PutDocumentInput,
+	PutDocumentResponse,
+} from './_typings';
+import {
+	documentResponse,
+	getDocumentByRequest,
+	notFoundResponse,
+	updateDocumentAndReturn,
+} from './_utils';
 
 export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> = async (
 	request
 ) => {
-	const { documentId } = request.params;
-
-	let document: Document;
-
-	/* try to get document from cache */
-	try {
-		const cached = await DOCUMENTS_KV.get(documentId, { type: 'json' });
-		if (cached !== null) {
-			document = cached as Document;
-		}
-	} catch {
-		/* ignore error on JSON.parse */
-	}
-
-	// if document is not found on cache
-	// or user requesting the document is the author(we should take document from storage instead of cache)
-	if (!document || document.authorId === request.locals.user.id) {
-		// todo try to get from data storage
-		// document =
-	}
+	const document = await getDocumentByRequest(request);
 
 	if (dev) {
+		const { documentId } = request.params;
+
 		if (documentId !== 'existing' && documentId !== 'existing-author') {
 			return { status: 404, body: { success: false, message: 'err' } };
 		}
@@ -52,38 +46,61 @@ export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> =
 	}
 
 	if (document) {
+		const isOwner = document.authorId === request.locals.user.id;
+		return documentResponse(document, isOwner);
+	}
+
+	return notFoundResponse();
+};
+
+export const put: RequestHandler<Locals, PutDocumentInput, Typify<PutDocumentResponse>> = async (
+	request
+) => {
+	if (dev) return devPutResponse(request);
+
+	const document = await getDocumentByRequest(request);
+
+	if (!document) return notFoundResponse();
+	if (document.authorId !== request.locals.user.id) {
 		return {
-			status: 200,
+			status: 401,
 			body: {
-				success: true,
-				data: { document, isOwner: document.authorId === request.locals.user.id },
+				success: false,
+				message: 'You must be the author of the document',
 			},
 		};
 	}
 
-	return {
-		status: 404,
-		body: {
-			success: false,
-			message: 'Document is not found',
-		},
-	};
+	try {
+		const { isEncrypted, title, author, content } = request.body;
+		const updatedDocument = await updateDocumentAndReturn({
+			...document,
+			isEncrypted,
+			title,
+			author,
+			content,
+		});
+
+		return documentResponse(updatedDocument, true);
+	} catch (err) {
+		let badRequestError = true;
+		if (!err.message || (err.message && !err.message.includes('param. Should be'))) {
+			badRequestError = false;
+		}
+
+		if (!badRequestError) {
+			console.error(JSON.stringify(request));
+			console.error(err);
+		}
+
+		return {
+			status: badRequestError ? 400 : 500,
+			body: { success: false, message: badRequestError ? err.message : 'Internal Server Error' },
+		};
+	}
 };
 
-// replace document PUT /docs/docId
-export const put: RequestHandler<Locals, unknown, Typify<PutDocumentResponse>> = async (
-	request
-) => {
-	const {
-		params: { documentId },
-		body,
-	} = request;
-	console.log('[docs put request', request, 'documentId', documentId);
-
-	await new Promise((resolve) => setTimeout(resolve, 2000));
-
-	const newDocument = body as any as Document;
-
+function devPutResponse(request): any {
 	return {
 		status: 200,
 		body: {
@@ -95,11 +112,11 @@ export const put: RequestHandler<Locals, unknown, Typify<PutDocumentResponse>> =
 					title: 'First document',
 					authorId: 'qwerty',
 					isEncrypted: false,
-					...newDocument,
-					documentId,
+					...(request.body as any as Document),
+					documentId: request.params.documentId,
 				},
 				isOwner: true, // because we editing it
 			},
 		},
 	};
-};
+}
