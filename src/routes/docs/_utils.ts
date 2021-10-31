@@ -1,8 +1,12 @@
 import type { Locals } from '$lib/types';
-import { v4 as uuid } from '@lukeed/uuid';
 import type { EndpointOutput } from '@sveltejs/kit/types/endpoint';
 import type { ServerRequest } from '@sveltejs/kit/types/hooks';
+import faunadb from 'faunadb';
+import SnowflakeId from 'snowflake-id';
+import { customFetch } from './_fauna-utils';
 import type { Document, PostDocumentInput, PutDocumentInput } from './_typings';
+
+const { Create, Collection, Ref } = faunadb.query;
 
 export async function getDocumentByRequest(
 	request: ServerRequest<Locals>
@@ -58,8 +62,16 @@ export async function createDocumentAndReturn(
 
 	const { isEncrypted, title, content, author } = request.body;
 
+	const faunaClient = new faunadb.Client({
+		secret: FAUNA_KEY,
+		fetch: customFetch,
+	});
+
+	// todo generate mid by cloudflare location?
+	const snowflake = new SnowflakeId();
+
 	const document: Document = {
-		documentId: uuid(),
+		documentId: snowflake.generate({ compact: true }),
 		authorId: request.locals.user.id,
 		isEncrypted,
 		title,
@@ -67,7 +79,12 @@ export async function createDocumentAndReturn(
 		content,
 	};
 
-	// todo put to storage
+	// post to storage
+	await faunaClient.query(
+		Create(Ref(Collection('Documents'), document.documentId), { data: document })
+	);
+
+	// put to cache
 	await DOCUMENTS_KV.put(document.documentId, JSON.stringify(document));
 
 	return document;
