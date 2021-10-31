@@ -6,7 +6,20 @@ import SnowflakeId from 'snowflake-id';
 import { customFetch } from './_fauna-utils';
 import type { Document, PostDocumentInput, PutDocumentInput } from './_typings';
 
-const { Create, Collection, Ref } = faunadb.query;
+const { Create, Collection, Ref, Get } = faunadb.query;
+
+async function getDocumentFromStorage(documentId): Promise<Document> {
+	const faunaClient = new faunadb.Client({
+		secret: FAUNA_KEY,
+		fetch: customFetch,
+	});
+
+	const result: { data: Document } = await faunaClient.query(
+		Get(Ref(Collection('Documents'), documentId))
+	);
+
+	return result.data;
+}
 
 export async function getDocumentByRequest(
 	request: ServerRequest<Locals>
@@ -28,8 +41,14 @@ export async function getDocumentByRequest(
 		// if document is not found on cache
 		// or user requesting the document is the author(we should take document from storage instead of cache)
 		if (!document || document.authorId === request.locals.user.id) {
-			// todo try to get from data storage
-			// document =
+			// try to get from data storage
+			try {
+				document = await getDocumentFromStorage(documentId);
+				console.log('data from storage. document');
+				console.log(JSON.stringify(document));
+			} catch {
+				/* catch 404 err */
+			}
 		}
 	}
 
