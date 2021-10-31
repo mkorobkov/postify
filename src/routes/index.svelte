@@ -15,7 +15,7 @@
 
 		try {
 			const result = await createDocument({ ...event.detail, isEncrypted: false });
-			goto(`/${result.document.documentId}`);
+			goto(`/docs/${result.document.documentId}`);
 		} catch (err) {
 			alert(err?.message ?? 'Error occurred');
 		} finally {
