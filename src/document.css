@@ -5,7 +5,7 @@
 }
 .document-author {
 	color: rgba(0, 0, 0, 0.7);
-	font-size: 22px;
+	font-size: 18px;
 	margin-bottom: 22px;
 }
 .document-content {
@@ -13,4 +13,8 @@
 	display: grid;
 	gap: 12px;
 	font-size: 20px;
+}
+.document-content blockquote {
+	padding-left: 20px;
+	border-left: 2px solid rgba(0, 0, 0, 0.4);
 }
