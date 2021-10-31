@@ -4,7 +4,7 @@
 	import type { SvelteComponentTyped } from 'svelte';
 	import Layout from '$lib/layout.svelte';
 	import Button from '$lib/button.svelte';
-	import type { PostDocumentResponse } from './docs/_typings';
+	import type { PostDocumentInput, PostDocumentResponse } from './docs/_typings';
 
 	let documentFormRef: (SvelteComponentTyped & { submitForm(): unknown }) | undefined;
 	let loading = false;
@@ -13,7 +13,7 @@
 		const res = await fetch('/docs', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ ...data, isEncrypted: false })
+			body: JSON.stringify({ ...data, isEncrypted: false } as PostDocumentInput)
 		});
 
 		const result = (await res.json()) as PostDocumentResponse;
