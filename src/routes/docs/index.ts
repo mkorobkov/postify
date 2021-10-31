@@ -1,15 +1,16 @@
 import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
 import { v4 as uuid } from '@lukeed/uuid';
-import type { Document, PostDocumentInput } from './_typings';
-import type { JSONString } from '@sveltejs/kit/types/helper';
+import type { Document, PostDocumentInput, PostDocumentResponse } from './_typings';
 import { mockedDocument } from './_mocked-document';
 
 import type { GetDocumentResponse } from './_typings';
-// create document: POST /docs
-export const post: RequestHandler<Locals> = async (request) => {
+
+export const post: RequestHandler<Locals, PostDocumentInput, Typify<PostDocumentResponse>> = async (
+	request
+) => {
 	try {
-		const { isEncrypted, title, author, content } = request.body as any as PostDocumentInput;
+		const { isEncrypted, title, author, content } = request.body;
 
 		if (typeof isEncrypted !== 'boolean')
 			throw new Error('Bad isEncrypted param. Should be boolean.');
@@ -23,7 +24,7 @@ export const post: RequestHandler<Locals> = async (request) => {
 			isEncrypted,
 			title,
 			author,
-			content
+			content,
 		};
 
 		await DOCUMENTS_KV.put(document.documentId, JSON.stringify(document));
@@ -34,9 +35,9 @@ export const post: RequestHandler<Locals> = async (request) => {
 				success: true,
 				data: {
 					isOwner: document.authorId === request.locals.user.id,
-					document: document as any as JSONString
-				}
-			}
+					document,
+				},
+			},
 		};
 	} catch (err) {
 		let badRequestError = true;
@@ -55,7 +56,7 @@ export const post: RequestHandler<Locals> = async (request) => {
 
 		return {
 			status: badRequestError ? 400 : 500,
-			body: { success: false, message: badRequestError ? err.message : 'Internal Server Error' }
+			body: { success: false, message: badRequestError ? err.message : 'Internal Server Error' },
 		};
 	}
 };
@@ -78,10 +79,10 @@ export const put: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> =
 					title: 'First document',
 					authorId: 'qwerty',
 					documentId,
-					isEncrypted: false
+					isEncrypted: false,
 				},
-				isOwner: documentId === 'existing-author'
-			}
-		}
+				isOwner: documentId === 'existing-author',
+			},
+		},
 	};
 };
