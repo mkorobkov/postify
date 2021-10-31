@@ -6,7 +6,7 @@ import SnowflakeId from 'snowflake-id';
 import { customFetch } from './_fauna-utils';
 import type { Document, PostDocumentInput, PutDocumentInput } from './_typings';
 
-const { Create, Collection, Ref, Get } = faunadb.query;
+const { Create, Collection, Ref, Get, Replace } = faunadb.query;
 
 async function getDocumentFromStorage(documentId): Promise<Document> {
 	const faunaClient = new faunadb.Client({
@@ -68,7 +68,16 @@ export function validateDocumentInputOrThrow(
 export async function updateDocumentAndReturn(document: Document): Promise<Document> {
 	validateDocumentInputOrThrow(document);
 
-	// todo update on storage
+	const faunaClient = new faunadb.Client({
+		secret: FAUNA_KEY,
+		fetch: customFetch,
+	});
+
+	// update on storage
+	await faunaClient.query(
+		Replace(Ref(Collection('Documents'), document.documentId), { data: document })
+	);
+	// update on cache
 	await DOCUMENTS_KV.put(document.documentId, JSON.stringify(document));
 
 	return document;
