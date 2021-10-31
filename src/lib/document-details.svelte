@@ -2,18 +2,16 @@
 	import { generateHTML } from '@tiptap/html';
 	import StarterKit from '@tiptap/starter-kit';
 
-	import type { TipTapJSONContent } from 'src/routes/docs/_typings';
+	import type { Document } from 'src/routes/docs/_typings';
 
-	export let title: string;
-	export let author: string;
-	export let content: TipTapJSONContent;
+	export let document: Partial<Document>;
 
-	$: html = generateHTML(content, [StarterKit]);
+	$: html = document.content === undefined ? '' : generateHTML(document.content, [StarterKit]);
 </script>
 
 <article>
-	<h1 class="document-title">{title}</h1>
-	<p class="document-author">{author}</p>
+	<h1 class="document-title">{document.title ?? ''}</h1>
+	<p class="document-author">{document.author ?? ''}</p>
 	<div class="document-content">{@html html}</div>
 </article>
 

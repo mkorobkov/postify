@@ -103,7 +103,7 @@
 		{/if}
 		{#if doc}
 			<Button on:click={() => (doc.content = undefined)}>Reset content</Button>
-			<Button on:click={() => (doc.title = 'new title')}>Reset title</Button>
+			<Button on:click={() => (doc.title = undefined)}>Reset title</Button>
 			<Button on:click={() => (doc.author = 'new author')}>Reset author</Button>
 		{/if}
 	</div>
@@ -119,7 +119,7 @@
 			/>
 		{/key}
 	{:else}
-		<DocumentDetails {...doc} />
+		<DocumentDetails document={doc} />
 	{/if}
 </Layout>
 
