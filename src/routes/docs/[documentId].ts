@@ -1,8 +1,8 @@
 import { dev } from '$app/env';
 import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
-import type { Document, GetDocumentResponse, PutDocumentResponse } from './_typings';
 import { mockedDocument } from './_mocked-document';
+import type { Document, GetDocumentResponse, PutDocumentResponse } from './_typings';
 
 export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> = async (
 	request
