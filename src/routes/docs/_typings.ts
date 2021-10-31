@@ -1,18 +1,11 @@
 import type { JSONContent } from '@tiptap/core';
 
-interface GetDocumentErrorResponse {
+interface ErrorResponse {
 	success: false;
 	message: string;
 }
 
-interface GetDocumentSuccessResponse {
-	success: true;
-	data: GetDocumentData;
-}
-
-export type GetDocumentResponse = GetDocumentErrorResponse | GetDocumentSuccessResponse;
-
-export interface GetDocumentData {
+export interface DocumentInfo {
 	isOwner: boolean;
 	document: Document;
 }
@@ -31,14 +24,23 @@ export type TipTapJSONContent = JSONContent;
 
 export type PostDocumentInput = Omit<Document, 'documentId' | 'authorId'>;
 
-interface PostDocumentErrorResponse {
-	success: false;
-	message: string;
-}
-
 interface PostDocumentSuccessResponse {
 	success: true;
-	data: GetDocumentData;
+	data: DocumentInfo;
 }
 
-export type PostDocumentResponse = PostDocumentErrorResponse | PostDocumentSuccessResponse;
+export type PostDocumentResponse = ErrorResponse | PostDocumentSuccessResponse;
+
+interface GetDocumentSuccessResponse {
+	success: true;
+	data: DocumentInfo;
+}
+
+export type GetDocumentResponse = ErrorResponse | GetDocumentSuccessResponse;
+
+interface PutDocumentSuccessResponse {
+	success: true;
+	data: DocumentInfo;
+}
+
+export type PutDocumentResponse = ErrorResponse | PutDocumentSuccessResponse;
