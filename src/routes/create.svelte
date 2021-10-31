@@ -12,6 +12,7 @@
 	async function createDocument(data: FormDocument) {
 		const res = await fetch('/docs', {
 			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ ...data, isEncrypted: false })
 		});
 
