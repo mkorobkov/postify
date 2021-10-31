@@ -36,20 +36,26 @@
 	}
 	.wrapper {
 		position: relative;
-		width: 700px;
+		width: 100%;
+		max-width: 700px;
 		margin: 0 auto;
 		min-height: 100vh;
 		display: flex;
 		flex-direction: column;
+		padding: 0 20px;
 	}
 	aside {
-		top: 32px;
-		position: fixed;
-		left: 50%;
-		width: 120px;
-		margin-left: 370px;
 		display: grid;
 		gap: 8px;
+		padding-top: 32px;
+
+		@media (min-width: 1023px) {
+			top: 0;
+			position: fixed;
+			left: 50%;
+			width: 120px;
+			margin-left: 370px;
+		}
 	}
 
 	footer {
