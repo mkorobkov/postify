@@ -30,3 +30,15 @@ export interface Document {
 export type TipTapJSONContent = JSONContent;
 
 export type PostDocumentInput = Omit<Document, 'documentId' | 'authorId'>;
+
+interface PostDocumentErrorResponse {
+	success: false;
+	message: string;
+}
+
+interface PostDocumentSuccessResponse {
+	success: true;
+	data: GetDocumentData;
+}
+
+export type PostDocumentResponse = PostDocumentErrorResponse | PostDocumentSuccessResponse;
