@@ -46,9 +46,8 @@
 
 <Layout>
 	<div slot="aside">
-		<a href="/">Main page</a>
-		<Button on:click={documentFormRef.submitForm} disabled={loading} class="publish">Publish</Button
-		>
+		<Button href="/">Main page</Button>
+		<Button on:click={documentFormRef.submitForm} disabled={loading}>Publish</Button>
 	</div>
 	<div class="container">
 		<DocumentForm bind:this={documentFormRef} on:submit={handleSubmit} {loading} />
