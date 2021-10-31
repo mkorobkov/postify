@@ -1,7 +1,6 @@
 import { dev } from '$app/env';
 import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
-import type { EndpointOutput } from '@sveltejs/kit/types/endpoint';
 import { mockedDocument } from './_mocked-document';
 import type {
 	Document,
@@ -9,52 +8,7 @@ import type {
 	PutDocumentInput,
 	PutDocumentResponse,
 } from './_typings';
-
-function notFoundResponse(): EndpointOutput {
-	return {
-		status: 404,
-		body: {
-			success: false,
-			message: 'Document is not found',
-		},
-	};
-}
-
-function documentResponse(document: Document, isOwner: boolean): EndpointOutput<any> {
-	return {
-		status: 200,
-		body: {
-			success: true,
-			data: { document, isOwner },
-		},
-	};
-}
-
-async function getDocumentByRequest(request): Promise<Document | undefined> {
-	let document: Document;
-	const { documentId } = request.params;
-
-	if (documentId) {
-		/* try to get document from cache */
-		try {
-			const cached = await DOCUMENTS_KV.get(documentId, { type: 'json' });
-			if (cached !== null) {
-				document = cached as Document;
-			}
-		} catch {
-			/* ignore error on JSON.parse */
-		}
-
-		// if document is not found on cache
-		// or user requesting the document is the author(we should take document from storage instead of cache)
-		if (!document || document.authorId === request.locals.user.id) {
-			// todo try to get from data storage
-			// document =
-		}
-	}
-
-	return document;
-}
+import { documentResponse, getDocumentByRequest, notFoundResponse } from './_utils';
 
 export const get: RequestHandler<Locals, unknown, Typify<GetDocumentResponse>> = async (
 	request
