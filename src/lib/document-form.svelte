@@ -5,6 +5,7 @@
 <script lang="ts">
 	import type { Document } from 'src/routes/docs/_typings';
 	import { createEventDispatcher } from 'svelte';
+	import Loading from './loading.svelte';
 	import TipTap from './tip-tap.svelte';
 
 	export let loading = false;
@@ -35,7 +36,9 @@
 </script>
 
 <form on:submit|preventDefault={submitForm}>
-	<div class:show={loading} class:loading={true} />
+	{#if loading}
+		<Loading />
+	{/if}
 	<label class:has-value={formTitle.length > 0} class="document-title">
 		<!-- svelte-ignore a11y-autofocus -->
 		<input bind:value={formTitle} autofocus={autoFocus === 'title'} />
@@ -46,26 +49,11 @@
 		<span>Author</span>
 	</label>
 	<div class="document-content">
-		<TipTap bind:content={formContent} editable={true} autoFocus={autoFocus === 'content'} />
+		<TipTap bind:content={formContent} autoFocus={autoFocus === 'content'} />
 	</div>
 </form>
 
 <style lang="less">
-	.loading {
-		display: none;
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(255, 255, 255, 0.6);
-		cursor: progress;
-		z-index: 1;
-
-		&.show {
-			display: block;
-		}
-	}
 	form {
 		position: relative;
 		display: grid;

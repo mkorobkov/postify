@@ -1,9 +1,14 @@
 <script>
 	import '../app.css';
 	import '../document.css';
+	import { navigating } from '$app/stores';
+	import Loading from './loading.svelte';
 </script>
 
 <div class="wrapper">
+	{#if $navigating}
+		<Loading />
+	{/if}
 	<main>
 		<slot />
 	</main>

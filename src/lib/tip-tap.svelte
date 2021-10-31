@@ -7,7 +7,6 @@
 	import { onDestroy, onMount } from 'svelte';
 
 	export let content: TipTapJSONContent;
-	export let editable = true;
 	export let autoFocus = false;
 
 	let element;
@@ -21,11 +20,9 @@
 			editor.commands.setTextSelection(cursorPosition); // prevent moving cursor to the end
 		}
 	};
-	$: editor?.setEditable(editable);
 
 	onMount(() => {
 		editor = new Editor({
-			editable,
 			element,
 			autofocus: autoFocus ? 'end' : false,
 			extensions: [
