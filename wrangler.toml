@@ -4,6 +4,7 @@ route = ''
 zone_id = ''
 usage_model = ''
 compatibility_flags = []
+compatibility_date = "2021-10-31"
 workers_dev = true
 site = {bucket = "./build",entry-point = "./workers-site"}
 
