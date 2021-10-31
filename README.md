@@ -1,6 +1,23 @@
 # Wrangler preparations
 
-`wrangler secret put JWT_SECRET`
+```
+wrangler secret put JWT_SECRET
+wrangler secret put FAUNA_KEY
+```
+
+# fauna
+
+Create database
+
+https://fauna.com/blog/getting-started-with-fauna-and-cloudflare-workers
+
+```shell
+CreateCollection({name: "Documents"})
+```
+
+Go to the Security section of the dashboard and create a new key with the Server role
+
+`wrangler secret put FAUNA_KEY`
 
 # create-svelte
 
