@@ -1,24 +1,61 @@
 import type { Locals, Typify } from '$lib/types';
 import type { RequestHandler } from '@sveltejs/kit';
+import { v4 as uuid } from '@lukeed/uuid';
+import type { Document, PostDocumentInput } from './_typings';
+import type { JSONString } from '@sveltejs/kit/types/helper';
 import { mockedDocument } from './_mocked-document';
 
 import type { GetDocumentResponse } from './_typings';
 // create document: POST /docs
 export const post: RequestHandler<Locals> = async (request) => {
-	console.log('[docs post request]', request);
 	try {
-		const parsedBody = JSON.parse(request.body as string) as { title: string };
+		const { isEncrypted, title, author, content } = request.body as any as PostDocumentInput;
 
-		await new Promise((resolve) => setTimeout(resolve, 2000));
+		if (typeof isEncrypted !== 'boolean')
+			throw new Error('Bad isEncrypted param. Should be boolean.');
+		if (typeof title !== 'string') throw new Error('Bad title param. Should be string.');
+		if (typeof author !== 'string') throw new Error('Bad author param. Should be string.');
+		if (typeof content !== 'object') throw new Error('Bad content param. Should be object.');
+
+		const document: Document = {
+			documentId: uuid(),
+			authorId: request.locals.user.id,
+			isEncrypted,
+			title,
+			author,
+			content
+		};
+
+		await DOCUMENTS_KV.put(document.documentId, JSON.stringify(document));
 
 		return {
 			status: 200,
-			body: { success: true, data: parsedBody.title.split(' ').join('').toLowerCase() } // remove spaces
+			body: {
+				success: true,
+				data: {
+					isOwner: document.authorId === request.locals.user.id,
+					document: document as any as JSONString
+				}
+			}
 		};
 	} catch (err) {
+		let badRequestError = true;
+		if (
+			!err.message ||
+			(err.message &&
+				!err.message.includes('in JSON at position') &&
+				!err.message.includes('param. Should be'))
+		) {
+			badRequestError = false;
+		}
+
+		if (!badRequestError) {
+			console.error(err);
+		}
+
 		return {
-			status: 400,
-			body: { success: false, message: err?.message ?? 'Error occurred' }
+			status: badRequestError ? 400 : 500,
+			body: { success: false, message: badRequestError ? err.message : 'Internal Server Error' }
 		};
 	}
 };
