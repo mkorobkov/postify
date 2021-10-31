@@ -10,10 +10,15 @@
 	let loading = false;
 
 	async function createDocument(data: FormDocument) {
+		const body: PostDocumentInput = {
+			...data,
+			isEncrypted: false,
+		};
+
 		const res = await fetch('/docs', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ ...data, isEncrypted: false } as PostDocumentInput)
+			body: JSON.stringify(body),
 		});
 
 		const result = (await res.json()) as PostDocumentResponse;
@@ -37,8 +42,6 @@
 			loading = false;
 		}
 	}
-
-	// todo: when loading, then show spinner upfront the form
 </script>
 
 <Layout>
